@@ -15,6 +15,10 @@ export interface DashboardConfig {
     maxCols: number;
     /** UI theme name (e.g., 'light', 'dark') */
     theme: string;
+    /** Optional header text */
+    header?: string;
+    /** Optional footer text */
+    footer?: string;
   };
   /** Array of widget configurations to render */
   widgets: WidgetConfig[];

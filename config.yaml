@@ -8,7 +8,7 @@ layout:
 widgets:
   - name: "System Metrics"
     type: system
-    order: 1
+    order: 3
     refresh: 5
   - name: "Liturgical Calendar"
     type: liturgical
@@ -16,7 +16,7 @@ widgets:
     refresh: 60
   - name: "Time & Office"
     type: time
-    order: 3
+    order: 1
     refresh: 30
   - name: "MLX Status"
     type: mlx
