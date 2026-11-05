@@ -1,13 +1,75 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Box, Text } from "ink";
+import { getLiturgicalInfo } from "../../lib/liturgical.js";
+import useRefresh from "../../hooks/useRefresh.js";
+import { useWidgetContext } from "../FoundationWidget.js";
 
+/**
+ * Liturgical Calendar widget that displays today's liturgical information.
+ *
+ * Uses the romcal library via getLiturgicalInfo to determine:
+ * - Current liturgical season (Advent, Christmas, Lent, Easter, Ordinary Time, etc.)
+ * - Feast/celebration name for today
+ * - Rank (Solemnity, Feast, Memorial, etc.)
+ * - Liturgical color
+ */
 const LiturgicalCalendar = () => {
-  return (
-    <Box>
+  const { theme } = useWidgetContext();
+
+  // Stable data function via useCallback to prevent infinite re-renders
+  const dataFn = useCallback(async () => getLiturgicalInfo(), []);
+
+  // Refresh every hour (3600 seconds) - liturgical calendar only changes daily
+  const { data: liturgical, isLoading, error } = useRefresh(3600, dataFn);
+
+  if (isLoading) {
+    return (
       <Box>
-        <Text bold>Liturgical Calendar</Text>
+        <Text color="cyan">Loading liturgical calendar...</Text>
       </Box>
-      <Box>Placeholder</Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box>
+        <Text color="red">Error: {error}</Text>
+      </Box>
+    );
+  }
+
+  if (!liturgical) {
+    return (
+      <Box>
+        <Text>No liturgical information available</Text>
+      </Box>
+    );
+  }
+
+  const dateStr = liturgical.date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric"
+  });
+
+  const colorMap: Record<string, string> = {
+    red: "red",
+    rose: "magenta",
+    purple: "blue",
+    green: "green",
+    white: "white",
+    gold: "yellow",
+  };
+
+  const terminalColor = colorMap[liturgical.color] || "green";
+
+  return (
+    <Box flexDirection="column">
+      <Text bold color={terminalColor}>{dateStr}</Text>
+      <Box><Text bold>Season:</Text><Text> {liturgical.season}</Text></Box>
+      <Box><Text bold>Feast:</Text><Text> {liturgical.name}</Text></Box>
+      <Box><Text bold>Rank:</Text><Text> {liturgical.rank}</Text></Box>
+      <Box><Text bold>Color:</Text><Text color={terminalColor}> ■ {liturgical.color}</Text></Box>
     </Box>
   );
 };

@@ -1,1 +1,1 @@
-npx tsx src/test-app.tsx
+npx tsx src/test-app.tsx --once

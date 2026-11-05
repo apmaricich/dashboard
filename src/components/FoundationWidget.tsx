@@ -57,9 +57,10 @@ const FoundationWidget = ({
         width={layout.width}
         paddingX={1}
         paddingY={1}
+        flexDirection="column"
       >
-        <Box flexDirection="row" justifyContent="space-between" marginBottom={1}>
-          <Box><Text bold color={theme.colors.primary}>{config.name}</Text></Box>
+        <Box>
+          <Text bold color={theme.colors.primary}>{config.name}{'\n'}</Text>
         </Box>
         <Box>{children}</Box>
       </Box>
