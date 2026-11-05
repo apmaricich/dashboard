@@ -1,5 +1,5 @@
 import React from "react";
-import { render, Box, useWindowSize } from "ink";
+import { render, Box, useWindowSize, Text } from "ink";
 import FoundationWidget from "./components/FoundationWidget.js";
 import LiturgicalCalendar from "./components/widgets/LiturgicalCalendar.js";
 import TimeOffice from "./components/widgets/TimeOffice.js";
@@ -26,20 +26,35 @@ function TestApp() {
     refresh: 0
   };
 
+  // Header height = 3 (border top, content, border bottom)
+  // Footer height = 3 (border top, content, border bottom)
+  // No spacing rows
+  const HEADER_HEIGHT = 3;
+  const FOOTER_HEIGHT = 3;
+  const widgetAreaHeight = rows - HEADER_HEIGHT - FOOTER_HEIGHT;
+
   const layouts = getLayoutStrategy("grid").compute(
     [config1, config2],
     columns,
-    rows
+    widgetAreaHeight
   );
 
   return (
-    <Box flexDirection="row">
-      <FoundationWidget config={config1} layout={layouts[0]} theme={theme}>
-        <LiturgicalCalendar />
-      </FoundationWidget>
-      <FoundationWidget config={config2} layout={layouts[1]} theme={theme}>
-        <TimeOffice />
-      </FoundationWidget>
+    <Box flexDirection="column">
+      <Box width="100%" borderStyle="single" borderColor={theme.colors.border}>
+        <Text bold color={theme.colors.primary}> Dashboard</Text>
+      </Box>
+      <Box flexDirection="row">
+        <FoundationWidget config={config1} layout={layouts[0]} theme={theme}>
+          <LiturgicalCalendar />
+        </FoundationWidget>
+        <FoundationWidget config={config2} layout={layouts[1]} theme={theme}>
+          <TimeOffice />
+        </FoundationWidget>
+      </Box>
+      <Box width="100%" borderStyle="single" borderColor={theme.colors.border}>
+        <Text bold color={theme.colors.primary}> APM</Text>
+      </Box>
     </Box>
   );
 }

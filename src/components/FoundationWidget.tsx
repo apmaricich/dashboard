@@ -62,7 +62,7 @@ const FoundationWidget = ({
         <Box>
           <Text bold color={theme.colors.primary}>{config.name}{'\n'}</Text>
         </Box>
-        <Box>{children}</Box>
+        <Box flexGrow={1}>{children}</Box>
       </Box>
     </WidgetContext.Provider>
   );

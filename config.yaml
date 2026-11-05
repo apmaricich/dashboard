@@ -2,6 +2,8 @@ layout:
   strategy: grid
   maxCols: 3
   theme: liturgical
+  header: "Dashboard"
+  footer: "APM"
 
 widgets:
   - name: "System Metrics"
