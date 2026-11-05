@@ -4,6 +4,7 @@ import FoundationWidget from "./components/FoundationWidget.js";
 import LiturgicalCalendar from "./components/widgets/LiturgicalCalendar.js";
 import TimeOffice from "./components/widgets/TimeOffice.js";
 import MlxStatus from "./components/widgets/MlxStatus.js";
+import SystemMetrics from "./components/widgets/SystemMetrics.js";
 import { getTheme } from "./themes/index.js";
 import { WidgetConfig } from "./config/loader.js";
 import { getLayoutStrategy, LayoutResult } from "./lib/layout.js";
@@ -34,6 +35,13 @@ function TestApp() {
     refresh: 0
   };
 
+  const config4: WidgetConfig = {
+    name: "System Metrics",
+    type: "system-metrics",
+    order: 4,
+    refresh: 0
+  };
+
   // Header height = 3 (border top, content, border bottom)
   // Footer height = 3 (border top, content, border bottom)
   // No spacing rows
@@ -42,26 +50,40 @@ function TestApp() {
   const widgetAreaHeight = rows - HEADER_HEIGHT - FOOTER_HEIGHT;
 
   const layouts = getLayoutStrategy("grid").compute(
-    [config1, config2, config3],
+    [config1, config2, config3, config4],
     columns,
-    widgetAreaHeight
+    widgetAreaHeight,
+    { maxCols: 3 }
   );
+
+  // Debug: show layout positions
+  console.error("Layout positions:");
+  layouts.forEach((l, i) => {
+    console.error(`  Widget ${i}: x=${l.x}, y=${l.y}, w=${l.width}, h=${l.height}`);
+  });
 
   return (
     <Box flexDirection="column">
       <Box width="100%" borderStyle="single" borderColor={theme.colors.border}>
         <Text bold color={theme.colors.primary}> Dashboard</Text>
       </Box>
-      <Box flexDirection="row">
-        <FoundationWidget config={config1} layout={layouts[0]} theme={theme}>
-          <LiturgicalCalendar />
-        </FoundationWidget>
-        <FoundationWidget config={config2} layout={layouts[1]} theme={theme}>
-          <TimeOffice />
-        </FoundationWidget>
-        <FoundationWidget config={config3} layout={layouts[2]} theme={theme}>
-          <MlxStatus />
-        </FoundationWidget>
+      <Box width={columns} height={widgetAreaHeight} position="relative">
+        {layouts.map((layout, i) => (
+          <FoundationWidget
+            key={i}
+            config={[config1, config2, config3, config4][i]}
+            layout={layout}
+            theme={theme}
+            position="absolute"
+            left={layout.x}
+            top={layout.y}
+          >
+            {i === 0 && <LiturgicalCalendar />}
+            {i === 1 && <TimeOffice />}
+            {i === 2 && <MlxStatus />}
+            {i === 3 && <SystemMetrics />}
+          </FoundationWidget>
+        ))}
       </Box>
       <Box width="100%" borderStyle="single" borderColor={theme.colors.border}>
         <Text bold color={theme.colors.primary}> APM</Text>

@@ -74,14 +74,11 @@ export function gridLayoutStrategy(options?: LayoutOptions): LayoutStrategy {
 
       const numRows = Math.ceil(results.length / maxCols);
       const cellHeight = containerHeight / numRows;
-      
-      // Fill available width: use actual columns needed, not maxCols
-      const actualCols = Math.min(results.length, maxCols);
-      const cellWidth = containerWidth / actualCols;
+      const cellWidth = containerWidth / maxCols;
 
       return results.map(({ widget, index }) => {
-        const row = Math.floor(index / actualCols);
-        const col = index % actualCols;
+        const row = Math.floor(index / maxCols);
+        const col = index % maxCols;
 
         return {
           x: col * cellWidth,

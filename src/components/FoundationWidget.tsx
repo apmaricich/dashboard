@@ -38,12 +38,19 @@ export interface FoundationWidgetProps {
   layout: LayoutResult;
   /** Active dashboard theme */
   theme: Theme;
+  /** Optional absolute positioning (for grid layout) */
+  position?: "relative" | "absolute";
+  left?: number;
+  top?: number;
 }
 
 const FoundationWidget = ({
   config,
   layout,
   theme,
+  position,
+  left,
+  top,
   children,
 }: PropsWithChildren<FoundationWidgetProps>) => {
   const contextValue: WidgetContextType = { config, layout, theme };
@@ -58,6 +65,9 @@ const FoundationWidget = ({
         paddingX={1}
         paddingY={1}
         flexDirection="column"
+        {...(position ? { position } : {})}
+        {...(left !== undefined ? { left } : {})}
+        {...(top !== undefined ? { top } : {})}
       >
         <Box>
           <Text bold color={theme.colors.primary}>{config.name}{'\n'}</Text>
