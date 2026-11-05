@@ -31,15 +31,39 @@ interface MlxModelInfo {
   meta?: MlxModelMeta;
 }
 
-async function fetchMlxModels(): Promise<MlxModelInfo[]> {
-  const response = await fetch(`${MLX_ENDPOINT}/v1/models`);
-  if (!response.ok) {
-    throw new Error(`MLX API returned ${response.status}`);
+/**
+ * Fetch MLX models with timeout support.
+ * Uses AbortController to enforce timeout and prevent hanging requests.
+ */
+async function fetchMlxModels(timeoutMs = 5000): Promise<MlxModelInfo[]> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetch(`${MLX_ENDPOINT}/v1/models`, {
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      throw new Error(`MLX API returned ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.data || [];
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error(`MLX API request timed out after ${timeoutMs}ms`);
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
   }
-  const data = await response.json();
-  return data.data || [];
 }
 
+/**
+ * Get MLX-serve status.
+ * Returns a status object even when the API is unreachable.
+ */
 export async function getMlxStatus(): Promise<MlxStatus> {
   try {
     const models = await fetchMlxModels();
@@ -73,6 +97,8 @@ export async function getMlxStatus(): Promise<MlxStatus> {
       capabilities: loadedModel.capabilities || [],
     };
   } catch (error) {
+    // Log detailed error for debugging, return safe default
+    console.error(`MLX-serve status error: ${error}`);
     return {
       running: false,
       model: null,

@@ -44,6 +44,40 @@ export interface FoundationWidgetProps {
   top?: number;
 }
 
+/**
+ * Error boundary that catches rendering errors in widgets
+ * and displays a friendly error message.
+ */
+class WidgetErrorBoundary extends React.Component<
+  { config: WidgetConfig; children: React.ReactNode },
+  { hasError: boolean; error: string | null }
+> {
+  constructor(props: { config: WidgetConfig; children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error, prevProps: any) {
+    console.error(`Widget "${prevProps.config.name}" error:`, error);
+    return { hasError: true, error: error.message };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <Box flexDirection="column">
+          <Text color="red">Widget error</Text>
+          <Text color="gray">{this.state.error}</Text>
+        </Box>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+/**
+ * Foundation widget wrapper that provides borders, theme, and error handling.
+ */
 const FoundationWidget = ({
   config,
   layout,
@@ -70,9 +104,11 @@ const FoundationWidget = ({
         {...(top !== undefined ? { top } : {})}
       >
         <Box>
-          <Text bold color={theme.colors.primary}>{config.name}{'\n'}</Text>
+          <Text bold color={theme.colors.primary}>{`${config.name}\n`}</Text>
         </Box>
-        <Box flexGrow={1}>{children}</Box>
+        <WidgetErrorBoundary config={config}>
+          <Box flexGrow={1}>{children}</Box>
+        </WidgetErrorBoundary>
       </Box>
     </WidgetContext.Provider>
   );

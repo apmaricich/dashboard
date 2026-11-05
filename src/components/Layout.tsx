@@ -42,7 +42,8 @@ const Layout = ({ widgets, layout, theme, columns, rows }: LayoutProps) => {
       {widgets.map((widget, index) => {
         const WidgetComponent = widgetRegistry.get(widget.type);
         if (!WidgetComponent) {
-          throw new Error(`Unknown widget type: ${widget.type}`);
+          console.error(`Unknown widget type: ${widget.type}`);
+          return null; // Skip unknown widget types
         }
         const layoutInfo = layout[index] || {
           x: 0,

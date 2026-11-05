@@ -75,8 +75,9 @@ const SystemMetrics = () => {
 
   if (error) {
     return (
-      <Box>
-        <Text color="red">Error: {error}</Text>
+      <Box flexDirection="column">
+        <Text color="red">Failed to read system metrics</Text>
+        <Text color="gray">System information unavailable</Text>
       </Box>
     );
   }

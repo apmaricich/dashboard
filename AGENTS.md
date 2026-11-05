@@ -62,19 +62,19 @@ layout:
 
 widgets:
   - name: "Liturgical Calendar"
-    type: liturgical-calendar
+    type: liturgical
     order: 1
     refresh: 3600
   - name: "Time & Office"
-    type: time-office
+    type: time
     order: 2
     refresh: 60
   - name: "MLX Status"
-    type: mlx-status
+    type: mlx
     order: 3
     refresh: 30
   - name: "System Metrics"
-    type: system-metrics
+    type: system
     order: 4
     refresh: 5
 ```

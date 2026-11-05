@@ -38,8 +38,9 @@ const MlxStatus = () => {
 
   if (error) {
     return (
-      <Box>
-        <Text color="red">Error: {error}</Text>
+      <Box flexDirection="column">
+        <Text color="red">Connection error</Text>
+        <Text color="gray">MLX-serve is not reachable</Text>
       </Box>
     );
   }

@@ -25,6 +25,7 @@ const useRefresh = <T>(
       setData(result);
       setLastUpdated(new Date());
     } catch (err) {
+      console.error(`Error in refresh hook: ${err}`);
       setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
       setIsLoading(false);

@@ -8,9 +8,9 @@ export interface TimeData {
 }
 
 export function getTimeData(): TimeData {
-  const local = new Date();
-  const utc = new Date(local.toUTCString());
-  const hour = local.getHours();
+  const now = new Date();
+  const utcNow = new Date(now.toUTCString());
+  const hour = now.getHours();
 
   let liturgy = "";
   let liturgyTimeRange = "";
@@ -39,10 +39,10 @@ export function getTimeData(): TimeData {
   }
 
   return {
-    local,
-    utc,
+    local: now,
+    utc: utcNow,
     hour,
-    minute: local.getMinutes(),
+    minute: now.getMinutes(),
     liturgy,
     liturgyTimeRange,
   };

@@ -51,10 +51,58 @@ export interface WidgetConfig {
  * @returns Parsed DashboardConfig object
  * @throws Error if file cannot be read or parsed
  */
+/**
+ * Default configuration used when no config file is provided.
+ */
+const DEFAULT_CONFIG: DashboardConfig = {
+  layout: {
+    strategy: "grid",
+    maxCols: 3,
+    theme: "liturgical",
+    header: "Dashboard",
+  },
+  widgets: [
+    {
+      name: "Liturgical Calendar",
+      type: "liturgical",
+      order: 1,
+      refresh: 3600,
+    },
+    {
+      name: "Time & Office",
+      type: "time",
+      order: 2,
+      refresh: 60,
+    },
+    {
+      name: "MLX Status",
+      type: "mlx",
+      order: 3,
+      refresh: 30,
+    },
+    {
+      name: "System Metrics",
+      type: "system",
+      order: 4,
+      refresh: 5,
+    },
+  ],
+};
+
+/**
+ * Load dashboard configuration from a YAML file.
+ * @param path - Path to the YAML configuration file
+ * @returns Parsed DashboardConfig object, or the default if no path or file not found
+ * @throws Error if the file exists but cannot be parsed
+ */
 export function loadConfig(path: string): DashboardConfig {
   if (!existsSync(path)) {
-    throw new Error(`Config file not found: ${path}`);
+    return DEFAULT_CONFIG;
   }
-  const content = readFileSync(path, "utf-8");
-  return yaml.load(content) as DashboardConfig;
+  try {
+    const content = readFileSync(path, "utf-8");
+    return yaml.load(content) as DashboardConfig;
+  } catch (err) {
+    throw new Error(`Failed to parse config file ${path}: ${err}`);
+  }
 }
