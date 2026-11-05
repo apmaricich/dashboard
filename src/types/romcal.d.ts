@@ -1,22 +1,28 @@
 declare module 'romcal' {
-  export interface RomcalOptions {
-    date?: string;
-    locale?: string;
-    country?: string;
-    includeAllData?: boolean;
-  }
+    export interface RomcalDay {
+        moment: string;
+        name: string;
+        type: string;
+        data?: {
+            meta?: {
+                liturgicalColor?: {
+                    key: string;
+                };
+            };
+        };
+    }
 
-  export interface RomcalResult {
-    date: string;
-    name: string;
-    type: string;
-    liturgicalColor: string;
-    liturgicalCycle: string;
-    liturgicalSeason: string;
-    psalterWeek: string;
-    [key: string]: unknown;
-  }
+    export function calendarFor(year?: number): RomcalDay[];
+    export function queryFor(year: number, month: number, day: number): RomcalDay;
+    export const countries: any;
+    export const getCalendar: any;
 
-  function romcal(options?: RomcalOptions): RomcalResult | null;
-  export default romcal;
+    const romcal: {
+        calendarFor: typeof calendarFor;
+        queryFor: typeof queryFor;
+        countries: typeof countries;
+        getCalendar: typeof getCalendar;
+    };
+
+    export default romcal;
 }
