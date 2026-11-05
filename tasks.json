@@ -1,57 +1,39 @@
 {
-  "config" : {
-    "sort" : "completed",
-    "tagDisplayLimit" : 0,
-    "pinTags" : [
-      "#pin"
-    ],
-    "command" : [
-      "bug",
-      "feature",
-      "backlog"
-    ],
-    "lists" : [
-      "backlogTags",
-      "pinTags",
-      "command"
-    ]
-  },
   "tasks" : [
     {
-      "title" : "Initialize Node.js project",
       "createdDate" : 1793896522.0533271,
-      "completed" : true,
-      "description" : "Run npm init in the dashboard project directory. Set name to 'dashboard', add appropriate description ('Configurable terminal dashboard with liturgical, developer, and system widgets'), version 0.1.0, and entry point 'src\/app.tsx'. Set 'type' to 'module' for ESM. Add a .gitignore file for Node.js projects (node_modules\/, dist\/, .DS_Store).",
       "tags" : [
         "#phase1"
       ],
-      "id" : 1,
-      "completedDate" : 1793898476.33549
+      "description" : "Run npm init in the dashboard project directory. Set name to 'dashboard', add appropriate description ('Configurable terminal dashboard with liturgical, developer, and system widgets'), version 0.1.0, and entry point 'src\/app.tsx'. Set 'type' to 'module' for ESM. Add a .gitignore file for Node.js projects (node_modules\/, dist\/, .DS_Store).",
+      "title" : "Initialize Node.js project",
+      "completed" : true,
+      "completedDate" : 1793898476.33549,
+      "id" : 1
     },
     {
       "title" : "Install core dependencies",
-      "id" : 2,
-      "createdDate" : 1793896522.0602231,
+      "completed" : true,
+      "description" : "Install the required npm dependencies: 'ink' (React for terminals UI framework), 'js-yaml' (YAML configuration parsing), 'romcal' (liturgical calendar computation library), and 'systeminformation' (system metrics collection).",
       "tags" : [
         "#phase1"
       ],
-      "description" : "Install the required npm dependencies: 'ink' (React for terminals UI framework), 'js-yaml' (YAML configuration parsing), 'romcal' (liturgical calendar computation library), and 'systeminformation' (system metrics collection).",
-      "completed" : true,
-      "completedDate" : 1793898487.7289381
+      "completedDate" : 1793898487.7289381,
+      "createdDate" : 1793896522.0602231,
+      "id" : 2
     },
     {
-      "id" : 3,
-      "createdDate" : 1793896522.066292,
-      "completed" : true,
-      "completedDate" : 1793898493.9268961,
+      "description" : "Install development dependencies: '@inkjs\/cli' for hot-reload during development, '@types\/node' for Node.js type definitions, and 'prettier' for consistent code formatting.",
       "title" : "Install development dependencies",
       "tags" : [
         "#phase1"
       ],
-      "description" : "Install development dependencies: '@inkjs\/cli' for hot-reload during development, '@types\/node' for Node.js type definitions, and 'prettier' for consistent code formatting."
+      "createdDate" : 1793896522.066292,
+      "id" : 3,
+      "completed" : true,
+      "completedDate" : 1793898493.9268961
     },
     {
-      "createdDate" : 1793896522.072557,
       "description" : "Create the complete project directory structure: src\/app.tsx, src\/config\/loader.ts, src\/components\/FoundationWidget.tsx, src\/components\/Layout.tsx, src\/components\/widgets\/LiturgicalCalendar.tsx, src\/components\/widgets\/TimeOffice.tsx, src\/components\/widgets\/MlxStatus.tsx, src\/components\/widgets\/SystemMetrics.tsx, src\/lib\/liturgical.ts, src\/lib\/mlx-status.ts, src\/lib\/system.ts, src\/lib\/time.ts, src\/hooks\/useRefresh.ts, src\/themes\/index.ts, src\/themes\/liturgical.ts, config.yaml, package.json, and README.md. All TypeScript files should have appropriate initial content (interfaces, imports, or empty component scaffolds).",
       "completed" : true,
       "tags" : [
@@ -59,257 +41,278 @@
       ],
       "id" : 4,
       "title" : "Create project structure",
+      "createdDate" : 1793896522.072557,
       "completedDate" : 1793898498.7585502
     },
     {
-      "createdDate" : 1793896522.0783749,
-      "tags" : [
-        "#phase2"
-      ],
-      "description" : "Create TypeScript interfaces in src\/config\/loader.ts for the dashboard configuration: DashboardConfig (layout with strategy, maxCols, theme; widgets array), and WidgetConfig (name, type, order, refresh interval in seconds, optional params object). These interfaces will be used for type-safe configuration parsing and validation.",
       "id" : 5,
-      "title" : "Define config schema",
-      "completed" : false
-    },
-    {
-      "id" : 6,
-      "createdDate" : 1793896522.084414,
-      "title" : "Create config loader",
       "tags" : [
         "#phase2"
       ],
-      "description" : "Implement loadConfig(path: string): DashboardConfig in src\/config\/loader.ts. Read the YAML file from the given path (default: .\/config.yaml), parse it with js-yaml.load(), validate that all required fields are present (layout.strategy, layout.maxCols, layout.theme, and for each widget: name, type, order, refresh). Throw descriptive error messages on validation failure. Export the loadConfig function.",
-      "completed" : false
+      "completed" : true,
+      "title" : "Define config schema",
+      "createdDate" : 1793896522.0783749,
+      "description" : "Create TypeScript interfaces in src\/config\/loader.ts for the dashboard configuration: DashboardConfig (layout with strategy, maxCols, theme; widgets array), and WidgetConfig (name, type, order, refresh interval in seconds, optional params object). These interfaces will be used for type-safe configuration parsing and validation.",
+      "completedDate" : 1793898713.877862
     },
     {
-      "completed" : false,
+      "description" : "Implement loadConfig(path: string): DashboardConfig in src\/config\/loader.ts. Read the YAML file from the given path (default: .\/config.yaml), parse it with js-yaml.load(), validate that all required fields are present (layout.strategy, layout.maxCols, layout.theme, and for each widget: name, type, order, refresh). Throw descriptive error messages on validation failure. Export the loadConfig function.",
+      "createdDate" : 1793896522.084414,
+      "id" : 6,
+      "tags" : [
+        "#phase2"
+      ],
+      "title" : "Create config loader",
+      "completedDate" : 1793898724.5968771,
+      "completed" : true
+    },
+    {
+      "completed" : true,
       "description" : "Create config.yaml with the default dashboard configuration: grid layout with 3 columns, liturgical theme, and 4 widgets (liturgical-calendar at order 1 with 3600s refresh, time-office at order 2 with 60s refresh, mlx-status at order 3 with 30s refresh, system-metrics at order 4 with 5s refresh). The config should be well-commented to explain each field.",
-      "title" : "Create default config",
       "tags" : [
         "#phase2"
       ],
       "createdDate" : 1793896522.0898671,
+      "title" : "Create default config",
+      "completedDate" : 1793898733.2007818,
       "id" : 7
     },
     {
       "title" : "Define theme interface",
+      "createdDate" : 1793896522.095624,
+      "completed" : false,
       "tags" : [
         "#phase3"
       ],
-      "description" : "Create the theme system interfaces in src\/themes\/index.ts: Theme interface (colors object with primary, border, text, background, accent strings; borderStyle string for Ink's box-drawing characters), ThemeFunction type (function accepting ThemeContext and returning Theme), and ThemeContext interface (date and other relevant context). Export all interfaces and types.",
       "id" : 8,
-      "createdDate" : 1793896522.095624,
-      "completed" : false
+      "description" : "Create the theme system interfaces in src\/themes\/index.ts: Theme interface (colors object with primary, border, text, background, accent strings; borderStyle string for Ink's box-drawing characters), ThemeFunction type (function accepting ThemeContext and returning Theme), and ThemeContext interface (date and other relevant context). Export all interfaces and types."
     },
     {
-      "createdDate" : 1793896522.1019249,
-      "id" : 9,
       "completed" : false,
+      "id" : 9,
+      "tags" : [
+        "#phase3"
+      ],
       "description" : "Implement the liturgical theme function in src\/themes\/liturgical.ts. Use the romcal library to determine today's liturgical color (RED, WHITE, GREEN, PURPLE, GOLD, ROSE). Map each liturgical color to a terminal hex color code. Return a Theme object with appropriate colors based on today's liturgical color. Accept an optional date parameter for testing purposes. Export the function as liturgicalTheme.",
       "title" : "Implement liturgical theme",
-      "tags" : [
-        "#phase3"
-      ]
+      "createdDate" : 1793896522.1019249
     },
     {
+      "tags" : [
+        "#phase3"
+      ],
       "createdDate" : 1793896522.10777,
-      "title" : "Implement theme registry",
-      "description" : "Implement the theme registry in src\/themes\/index.ts. Provide registerTheme(name: string, fn: ThemeFunction) and getTheme(name: string, context: ThemeContext): Theme functions. Register the liturgical theme as 'liturgical' at startup. Export the registry functions and the ThemeContext interface.",
       "completed" : false,
       "id" : 10,
-      "tags" : [
-        "#phase3"
-      ]
+      "description" : "Implement the theme registry in src\/themes\/index.ts. Provide registerTheme(name: string, fn: ThemeFunction) and getTheme(name: string, context: ThemeContext): Theme functions. Register the liturgical theme as 'liturgical' at startup. Export the registry functions and the ThemeContext interface.",
+      "title" : "Implement theme registry"
     },
     {
+      "tags" : [
+        "#phase4"
+      ],
+      "completed" : false,
       "createdDate" : 1793896522.112937,
-      "title" : "Define layout strategy interface",
       "description" : "Define the layout strategy interfaces in src\/lib\/layout.ts: LayoutResult (x, y, width, height coordinates), and LayoutStrategy (compute function that takes an array of widget configs, container width, and container height, and returns an array of LayoutResult objects). Export all interfaces.",
-      "tags" : [
-        "#phase4"
-      ],
-      "id" : 11,
-      "completed" : false
+      "title" : "Define layout strategy interface",
+      "id" : 11
     },
     {
-      "createdDate" : 1793896522.1183372,
+      "completed" : false,
       "tags" : [
         "#phase4"
       ],
+      "createdDate" : 1793896522.1183372,
       "id" : 12,
       "title" : "Implement grid layout",
-      "description" : "Implement the grid layout strategy in src\/lib\/layout.ts. Accept widget configs sorted by order, container dimensions, and maxCols parameter. If only one widget, return full container dimensions. Otherwise, compute a grid layout: divide widgets into rows of maxCols, calculate each cell's dimensions, and return LayoutResult objects for each widget. Export the grid layout strategy function.",
-      "completed" : false
+      "description" : "Implement the grid layout strategy in src\/lib\/layout.ts. Accept widget configs sorted by order, container dimensions, and maxCols parameter. If only one widget, return full container dimensions. Otherwise, compute a grid layout: divide widgets into rows of maxCols, calculate each cell's dimensions, and return LayoutResult objects for each widget. Export the grid layout strategy function."
     },
     {
       "description" : "Implement the layout strategy registry in src\/lib\/layout.ts. Provide registerLayoutStrategy(name: string, fn: LayoutStrategy) and getLayoutStrategy(name: string): LayoutStrategy functions. Register the grid layout as 'grid' at startup. Export the registry functions.",
+      "id" : 13,
+      "createdDate" : 1793896522.1228828,
+      "title" : "Implement layout strategy registry",
       "tags" : [
         "#phase4"
       ],
-      "completed" : false,
-      "createdDate" : 1793896522.1228828,
-      "id" : 13,
-      "title" : "Implement layout strategy registry"
+      "completed" : false
     },
     {
-      "title" : "Create refresh hook",
       "createdDate" : 1793896522.1282039,
+      "description" : "Implement useRefresh hook in src\/hooks\/useRefresh.ts. The hook should accept a refresh interval in seconds and an optional async data-fetching function. Use useEffect with cleanup to manage the interval. Return an object with data, isLoading, error, and lastUpdated fields. Handle error states from the data-fetching function. The hook should fetch data on mount and then at each interval.",
       "tags" : [
         "#phase5"
       ],
+      "title" : "Create refresh hook",
       "completed" : false,
-      "description" : "Implement useRefresh hook in src\/hooks\/useRefresh.ts. The hook should accept a refresh interval in seconds and an optional async data-fetching function. Use useEffect with cleanup to manage the interval. Return an object with data, isLoading, error, and lastUpdated fields. Handle error states from the data-fetching function. The hook should fetch data on mount and then at each interval.",
       "id" : 14
     },
     {
-      "description" : "Implement the FoundationWidget component in src\/components\/FoundationWidget.tsx. This is a wrapper component that all dashboard widgets use. Props: config (widget configuration), layout (computed layout dimensions), theme (current theme), children (the widget's content component). Use Ink's Box component with the theme's border style and colors. Create a React Context that provides theme and layout dimensions to children. Use the useRefresh hook with the config's refresh interval. Handle error display by showing a generic 'unavailable' state. Pass appropriate props to children via context or direct props.",
-      "createdDate" : 1793896522.133682,
       "title" : "Create foundation widget component",
       "tags" : [
         "#phase5"
       ],
-      "completed" : false,
-      "id" : 15
+      "id" : 15,
+      "createdDate" : 1793896522.133682,
+      "description" : "Implement the FoundationWidget component in src\/components\/FoundationWidget.tsx. This is a wrapper component that all dashboard widgets use. Props: config (widget configuration), layout (computed layout dimensions), theme (current theme), children (the widget's content component). Use Ink's Box component with the theme's border style and colors. Create a React Context that provides theme and layout dimensions to children. Use the useRefresh hook with the config's refresh interval. Handle error display by showing a generic 'unavailable' state. Pass appropriate props to children via context or direct props.",
+      "completed" : false
     },
     {
-      "id" : 16,
-      "tags" : [
-        "#phase6"
-      ],
+      "title" : "Implement liturgical data layer",
       "description" : "Implement the liturgical data layer in src\/lib\/liturgical.ts. Use the romcal library to generate the liturgical calendar for the current year. Filter the results to find today's date. Extract and return a structured object containing: today's date, liturgical season name, feast\/celebration name, rank (Solemnity\/Feast\/Memorial), and liturgical color. Handle edge cases such as multiple celebrations on the same day by selecting the highest rank.",
       "completed" : false,
-      "title" : "Implement liturgical data layer",
-      "createdDate" : 1793896522.1397362
+      "id" : 16,
+      "createdDate" : 1793896522.1397362,
+      "tags" : [
+        "#phase6"
+      ]
     },
     {
+      "createdDate" : 1793896522.1452169,
+      "completed" : false,
+      "id" : 17,
       "tags" : [
         "#phase6"
       ],
-      "completed" : false,
-      "createdDate" : 1793896522.1452169,
       "description" : "Implement the LiturgicalCalendar widget in src\/components\/widgets\/LiturgicalCalendar.tsx. Use the useRefresh hook with the config's refresh interval (default 3600s). Fetch liturgical data via the lib\/liturgical.ts layer. Display: today's date, liturgical season, feast name, and rank. Use the theme context for colors. Render within the layout dimensions provided by the foundation widget.",
-      "id" : 17,
       "title" : "Implement liturgical calendar widget"
     },
     {
-      "createdDate" : 1793896522.1502759,
-      "description" : "Implement the time data layer in src\/lib\/time.ts. Provide functions to get the current local time, current UTC time, and determine the suggested Liturgy of the Hours based on the current time (before 6am: Compline, 6-9am: Lauds, 9am-12pm: Terce, 12-3pm: Sext, 3-6pm: None, 6-9pm: Vespers, after 9pm: Compline). Return a structured object with all this information.",
       "completed" : false,
-      "tags" : [
-        "#phase7"
-      ],
       "title" : "Implement time data layer",
-      "id" : 18
-    },
-    {
-      "completed" : false,
-      "description" : "Implement the TimeOffice widget in src\/components\/widgets\/TimeOffice.tsx. Use the useRefresh hook with a 60-second interval. Display: current local time, current UTC time, and the suggested Liturgy of the Hours for the current time slot. Use the theme context for colors. Format times in a readable format.",
-      "title" : "Implement time and office widget",
-      "id" : 19,
-      "createdDate" : 1793896522.1551571,
+      "description" : "Implement the time data layer in src\/lib\/time.ts. Provide functions to get the current local time, current UTC time, and determine the suggested Liturgy of the Hours based on the current time (before 6am: Compline, 6-9am: Lauds, 9am-12pm: Terce, 12-3pm: Sext, 3-6pm: None, 6-9pm: Vespers, after 9pm: Compline). Return a structured object with all this information.",
+      "id" : 18,
+      "createdDate" : 1793896522.1502759,
       "tags" : [
         "#phase7"
       ]
     },
     {
-      "id" : 20,
+      "tags" : [
+        "#phase7"
+      ],
+      "id" : 19,
+      "completed" : false,
+      "title" : "Implement time and office widget",
+      "description" : "Implement the TimeOffice widget in src\/components\/widgets\/TimeOffice.tsx. Use the useRefresh hook with a 60-second interval. Display: current local time, current UTC time, and the suggested Liturgy of the Hours for the current time slot. Use the theme context for colors. Format times in a readable format.",
+      "createdDate" : 1793896522.1551571
+    },
+    {
+      "completed" : false,
       "tags" : [
         "#phase8"
       ],
-      "createdDate" : 1793896522.1611249,
       "description" : "Implement the MLX-serve status data layer in src\/lib\/mlx-status.ts. Make an HTTP GET request to http:\/\/localhost:11235\/v1\/models. Parse the JSON response array and find the model with 'loaded: true'. Extract: model name\/id, bytes_resident (memory usage), and state (ready\/unloaded). Handle connection errors (server not running) and return appropriate structured objects for each state. Include timeout handling.",
       "title" : "Implement mlx-serve data layer",
-      "completed" : false
+      "id" : 20,
+      "createdDate" : 1793896522.1611249
     },
     {
-      "tags" : [
-        "#phase8"
-      ],
+      "completed" : false,
+      "id" : 21,
       "description" : "Implement the MlxStatus widget in src\/components\/widgets\/MlxStatus.tsx. Use the useRefresh hook with a 30-second interval. Display: the active MLX-serve model name, memory usage (formatted from bytes_resident), and state. If no model is loaded, show 'No active model'. If the server is not running, show 'MLX-serve not running'. Use the theme context for colors.",
       "createdDate" : 1793896522.1664891,
-      "id" : 21,
       "title" : "Implement mlx-serve status widget",
-      "completed" : false
+      "tags" : [
+        "#phase8"
+      ]
     },
     {
-      "description" : "Implement the system metrics data layer in src\/lib\/system.ts. Use the systeminformation npm package to collect: CPU load percentage, memory usage (used and total bytes), and GPU info if available on the platform (macOS). Format all values into human-readable strings. Return a structured object with all metrics.",
-      "title" : "Implement system data layer",
+      "createdDate" : 1793896522.171643,
       "id" : 22,
+      "completed" : false,
+      "description" : "Implement the system metrics data layer in src\/lib\/system.ts. Use the systeminformation npm package to collect: CPU load percentage, memory usage (used and total bytes), and GPU info if available on the platform (macOS). Format all values into human-readable strings. Return a structured object with all metrics.",
       "tags" : [
         "#phase9"
       ],
-      "completed" : false,
-      "createdDate" : 1793896522.171643
+      "title" : "Implement system data layer"
     },
     {
-      "tags" : [
-        "#phase9"
-      ],
-      "description" : "Implement the SystemMetrics widget in src\/components\/widgets\/SystemMetrics.tsx. Use the useRefresh hook with a 5-second interval. Display: CPU usage percentage, memory usage (formatted), and GPU status if available. Use ASCII progress bars or sparklines where appropriate. Use the theme context for colors.",
-      "completed" : false,
-      "title" : "Implement system metrics widget",
       "createdDate" : 1793896522.1767669,
-      "id" : 23
+      "id" : 23,
+      "tags" : [
+        "#phase9"
+      ],
+      "title" : "Implement system metrics widget",
+      "completed" : false,
+      "description" : "Implement the SystemMetrics widget in src\/components\/widgets\/SystemMetrics.tsx. Use the useRefresh hook with a 5-second interval. Display: CPU usage percentage, memory usage (formatted), and GPU status if available. Use ASCII progress bars or sparklines where appropriate. Use the theme context for colors."
     },
     {
-      "createdDate" : 1793896522.1823711,
+      "description" : "Implement the main App component in src\/app.tsx. Load the dashboard configuration using loadConfig(). Determine the terminal's container dimensions using Ink's built-in size API. Compute the layout for all widgets using the configured layout strategy. Render the Layout component with the widget configurations and layout results. Handle key bindings for future functionality (e.g., profile switching). Set up the app to export a default Ink-compatible component.",
+      "completed" : false,
       "title" : "Create main app component",
+      "createdDate" : 1793896522.1823711,
       "id" : 24,
       "tags" : [
         "#phase10"
-      ],
-      "description" : "Implement the main App component in src\/app.tsx. Load the dashboard configuration using loadConfig(). Determine the terminal's container dimensions using Ink's built-in size API. Compute the layout for all widgets using the configured layout strategy. Render the Layout component with the widget configurations and layout results. Handle key bindings for future functionality (e.g., profile switching). Set up the app to export a default Ink-compatible component.",
-      "completed" : false
+      ]
     },
     {
-      "completed" : false,
       "description" : "Implement the Layout component in src\/components\/Layout.tsx. Accept widget configurations, computed layout results, and the current theme. For each widget, render a FoundationWidget component with the appropriate layout dimensions and theme. Use Ink's Box component for positioning and sizing. Handle container resizing by re-computing layout when dimensions change.",
-      "title" : "Implement layout component",
-      "id" : 25,
       "createdDate" : 1793896522.187289,
+      "completed" : false,
       "tags" : [
         "#phase10"
-      ]
+      ],
+      "title" : "Implement layout component",
+      "id" : 25
     },
     {
       "id" : 26,
+      "completed" : false,
+      "description" : "In the application startup code (src\/app.tsx or a dedicated init file), register all themes (liturgical), layout strategies (grid), and widget types (liturgical, time, mlx-serve, system). Ensure the registration happens before the config is loaded so that the registry lookups succeed.",
+      "createdDate" : 1793896522.1922932,
+      "title" : "Register all components",
       "tags" : [
         "#phase10"
-      ],
-      "description" : "In the application startup code (src\/app.tsx or a dedicated init file), register all themes (liturgical), layout strategies (grid), and widget types (liturgical, time, mlx-serve, system). Ensure the registration happens before the config is loaded so that the registry lookups succeed.",
-      "title" : "Register all components",
-      "createdDate" : 1793896522.1922932,
-      "completed" : false
+      ]
     },
     {
       "completed" : false,
-      "title" : "Manual testing",
+      "createdDate" : 1793896522.1972041,
+      "description" : "Test the complete dashboard: run the application with the provided config.yaml, verify all 4 widgets render correctly in the grid layout, test different maxCols values by modifying the config, and verify the liturgical theme applies the correct color for today. Ensure the dashboard handles terminal resizing gracefully.",
       "tags" : [
         "#phase11"
       ],
-      "description" : "Test the complete dashboard: run the application with the provided config.yaml, verify all 4 widgets render correctly in the grid layout, test different maxCols values by modifying the config, and verify the liturgical theme applies the correct color for today. Ensure the dashboard handles terminal resizing gracefully.",
       "id" : 27,
-      "createdDate" : 1793896522.1972041
+      "title" : "Manual testing"
     },
     {
-      "completed" : false,
       "id" : 28,
       "title" : "Error handling",
+      "description" : "Add comprehensive error handling throughout the application: wrap all network requests (MLX-serve status) in try\/catch with timeouts, display friendly error messages in widgets when data fetching fails, log detailed errors to stderr for debugging, and ensure one widget's failure does not crash the entire dashboard.",
       "tags" : [
         "#phase11"
       ],
-      "createdDate" : 1793896522.2017291,
-      "description" : "Add comprehensive error handling throughout the application: wrap all network requests (MLX-serve status) in try\/catch with timeouts, display friendly error messages in widgets when data fetching fails, log detailed errors to stderr for debugging, and ensure one widget's failure does not crash the entire dashboard."
+      "completed" : false,
+      "createdDate" : 1793896522.2017291
     },
     {
-      "id" : 29,
-      "description" : "Update README.md with: project description, setup instructions (installing dependencies, running the app), configuration documentation (explaining each config field with examples), usage examples (how to customize the dashboard, add\/remove widgets), and architectural overview (explaining the modular widget design).",
       "completed" : false,
-      "createdDate" : 1793896522.205864,
-      "title" : "Documentation",
       "tags" : [
         "#phase11"
-      ]
+      ],
+      "createdDate" : 1793896522.205864,
+      "title" : "Documentation",
+      "id" : 29,
+      "description" : "Update README.md with: project description, setup instructions (installing dependencies, running the app), configuration documentation (explaining each config field with examples), usage examples (how to customize the dashboard, add\/remove widgets), and architectural overview (explaining the modular widget design)."
     }
-  ]
+  ],
+  "config" : {
+    "command" : [
+      "bug",
+      "feature",
+      "backlog"
+    ],
+    "sort" : "completed",
+    "pinTags" : [
+      "#pin"
+    ],
+    "lists" : [
+      "backlogTags",
+      "pinTags",
+      "command"
+    ],
+    "tagDisplayLimit" : 0
+  }
 }
