@@ -1,1 +1,7 @@
-tasks.json
+node_modules/
+dist/
+.DS_Store
+.env
+.env.local
+*.log
+coverage/
