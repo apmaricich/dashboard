@@ -3,6 +3,7 @@ import { render, Box, useWindowSize, Text } from "ink";
 import FoundationWidget from "./components/FoundationWidget.js";
 import LiturgicalCalendar from "./components/widgets/LiturgicalCalendar.js";
 import TimeOffice from "./components/widgets/TimeOffice.js";
+import MlxStatus from "./components/widgets/MlxStatus.js";
 import { getTheme } from "./themes/index.js";
 import { WidgetConfig } from "./config/loader.js";
 import { getLayoutStrategy, LayoutResult } from "./lib/layout.js";
@@ -26,6 +27,13 @@ function TestApp() {
     refresh: 0
   };
 
+  const config3: WidgetConfig = {
+    name: "MLX Status",
+    type: "mlx-status",
+    order: 3,
+    refresh: 0
+  };
+
   // Header height = 3 (border top, content, border bottom)
   // Footer height = 3 (border top, content, border bottom)
   // No spacing rows
@@ -34,7 +42,7 @@ function TestApp() {
   const widgetAreaHeight = rows - HEADER_HEIGHT - FOOTER_HEIGHT;
 
   const layouts = getLayoutStrategy("grid").compute(
-    [config1, config2],
+    [config1, config2, config3],
     columns,
     widgetAreaHeight
   );
@@ -50,6 +58,9 @@ function TestApp() {
         </FoundationWidget>
         <FoundationWidget config={config2} layout={layouts[1]} theme={theme}>
           <TimeOffice />
+        </FoundationWidget>
+        <FoundationWidget config={config3} layout={layouts[2]} theme={theme}>
+          <MlxStatus />
         </FoundationWidget>
       </Box>
       <Box width="100%" borderStyle="single" borderColor={theme.colors.border}>
