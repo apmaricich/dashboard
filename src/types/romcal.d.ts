@@ -14,8 +14,8 @@ declare module 'romcal' {
 
     export function calendarFor(year?: number): RomcalDay[];
     export function queryFor(year: number, month: number, day: number): RomcalDay;
-    export const countries: any;
-    export const getCalendar: any;
+    export const countries: unknown;
+    export const getCalendar: unknown;
 
     const romcal: {
         calendarFor: typeof calendarFor;

@@ -24,9 +24,8 @@ const COLOR_MAP: Record<string, string> = {
  * @param day - Romcal day object
  * @returns Liturgical color name
  */
-function determineLiturgicalColor(day: any): string {
+function _determineLiturgicalColor(day: { name?: string }): string {
     const name = day.name ? day.name.toLowerCase() : '';
-    const type = day.type ? day.type.toUpperCase() : '';
 
     // White: Easter season, Christmas season, major feasts
     if (name.includes('easter') || name.includes('paschal')) {
@@ -332,7 +331,7 @@ export default function liturgicalTheme(context: ThemeContext): Theme {
         const calendar = calendarFor();
 
         // Find today's day object in the calendar
-        const dayObj = calendar.find((d: any) => {
+        const dayObj = calendar.find((d: { moment: string }) => {
             const dDate = new Date(d.moment);
             return dDate.getFullYear() === year &&
                    dDate.getMonth() === month &&

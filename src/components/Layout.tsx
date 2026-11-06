@@ -8,6 +8,7 @@ import SystemMetrics from "./widgets/SystemMetrics.js";
 import LiturgicalCalendar from "./widgets/LiturgicalCalendar.js";
 import TimeOffice from "./widgets/TimeOffice.js";
 import MlxStatus from "./widgets/MlxStatus.js";
+import ClockWidget from "./widgets/ClockWidget.js";
 
 /**
  * Widget type registry mapping widget type names to React components.
@@ -18,6 +19,7 @@ widgetRegistry.set("system", SystemMetrics);
 widgetRegistry.set("liturgical", LiturgicalCalendar);
 widgetRegistry.set("time", TimeOffice);
 widgetRegistry.set("mlx", MlxStatus);
+widgetRegistry.set("clock", ClockWidget);
 
 export interface LayoutProps {
   /** Widget configurations to render */

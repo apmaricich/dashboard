@@ -2,25 +2,29 @@ layout:
   strategy: grid
   maxCols: 3
   theme: liturgical
-  header: "Dashboard"
+  header: "Dashboard - APM"
   footer: "APM"
 
 widgets:
-  - name: "System Metrics"
-    type: system
-    order: 3
-    refresh: 5
-  - name: "Liturgical Calendar"
-    type: liturgical
-    order: 2
-    refresh: 60
+  - name: "Clock"
+    type: clock
+    order: 1
+    refresh: 1
   - name: "Time & Office"
     type: time
-    order: 1
+    order: 2
     refresh: 30
+  - name: "Liturgical Calendar"
+    type: liturgical
+    order: 3
+    refresh: 60
+  - name: "System Metrics"
+    type: system
+    order: 4
+    refresh: 5
   - name: "MLX Status"
     type: mlx
-    order: 4
+    order: 5
     refresh: 30
     params:
       endpoint: "http://localhost:8080"

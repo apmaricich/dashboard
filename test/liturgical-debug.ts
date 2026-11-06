@@ -1,14 +1,14 @@
 import calendarFor from 'romcal';
 
 const today = new Date();
-const year = today.getFullYear();
+const _year = today.getFullYear();
 
 const calendar = calendarFor();
 console.log('romcal type:', typeof calendarFor);
 console.log('calendar type:', typeof calendar);
 
 // Find today
-const dayObj = calendar.find((d: any) => {
+const dayObj = calendar.find((d: unknown) => {
     const dDate = new Date(d.date);
     return dDate.getFullYear() === today.getFullYear() &&
            dDate.getMonth() === today.getMonth() &&

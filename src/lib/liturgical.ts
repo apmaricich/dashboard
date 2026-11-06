@@ -43,7 +43,7 @@ export function getLiturgicalInfo(date?: Date): LiturgicalInfo {
       season: normalizeSeason(romcalDay.type, romcalDay.name),
       color: romcalDay.data?.meta?.liturgicalColor?.key ?? 'green',
     };
-  } catch (e) {
+  } catch (_e) {
     return {
       date: d,
       name: 'Unknown',

@@ -1,6 +1,7 @@
 import React from "react";
 import { render, Box, useWindowSize, Text } from "ink";
 import FoundationWidget from "./components/FoundationWidget.js";
+import ClockWidget from "./components/widgets/ClockWidget.js";
 import LiturgicalCalendar from "./components/widgets/LiturgicalCalendar.js";
 import TimeOffice from "./components/widgets/TimeOffice.js";
 import MlxStatus from "./components/widgets/MlxStatus.js";
@@ -15,30 +16,37 @@ function TestApp() {
   const { columns, rows } = useWindowSize();
 
   const config1: WidgetConfig = {
-    name: "Liturgical Calendar",
-    type: "liturgical-calendar",
+    name: "Clock",
+    type: "clock",
     order: 1,
     refresh: 0
   };
 
   const config2: WidgetConfig = {
-    name: "Time & Office",
-    type: "time-office",
+    name: "Liturgical Calendar",
+    type: "liturgical-calendar",
     order: 2,
     refresh: 0
   };
 
   const config3: WidgetConfig = {
-    name: "MLX Status",
-    type: "mlx-status",
+    name: "Time & Office",
+    type: "time-office",
     order: 3,
     refresh: 0
   };
 
   const config4: WidgetConfig = {
+    name: "MLX Status",
+    type: "mlx-status",
+    order: 4,
+    refresh: 0
+  };
+
+  const config5: WidgetConfig = {
     name: "System Metrics",
     type: "system-metrics",
-    order: 4,
+    order: 5,
     refresh: 0
   };
 
@@ -49,8 +57,9 @@ function TestApp() {
   const FOOTER_HEIGHT = 3;
   const widgetAreaHeight = rows - HEADER_HEIGHT - FOOTER_HEIGHT;
 
+  const allConfigs = [config1, config2, config3, config4, config5];
   const layouts = getLayoutStrategy("grid").compute(
-    [config1, config2, config3, config4],
+    allConfigs,
     columns,
     widgetAreaHeight,
     { maxCols: 3 }
@@ -71,17 +80,18 @@ function TestApp() {
         {layouts.map((layout, i) => (
           <FoundationWidget
             key={i}
-            config={[config1, config2, config3, config4][i]}
+            config={allConfigs[i]}
             layout={layout}
             theme={theme}
             position="absolute"
             left={layout.x}
             top={layout.y}
           >
-            {i === 0 && <LiturgicalCalendar />}
-            {i === 1 && <TimeOffice />}
-            {i === 2 && <MlxStatus />}
-            {i === 3 && <SystemMetrics />}
+            {i === 0 && <ClockWidget />}
+            {i === 1 && <LiturgicalCalendar />}
+            {i === 2 && <TimeOffice />}
+            {i === 3 && <MlxStatus />}
+            {i === 4 && <SystemMetrics />}
           </FoundationWidget>
         ))}
       </Box>
