@@ -82,3 +82,6 @@ export function getTheme(name: string, context: ThemeContext): Theme {
 
 import { default as liturgicalTheme } from './liturgical.js';
 registerTheme('liturgical', liturgicalTheme);
+
+import { default as seasonalTheme } from './seasonal.js';
+registerTheme('seasonal', seasonalTheme);

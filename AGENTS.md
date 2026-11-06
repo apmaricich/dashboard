@@ -57,6 +57,7 @@ layout:
   strategy: grid
   maxCols: 3
   theme: liturgical
+  # Options: liturgical, seasonal
   header: "Dashboard"
   footer: "APM"
 

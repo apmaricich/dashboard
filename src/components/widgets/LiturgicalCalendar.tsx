@@ -76,10 +76,22 @@ const LiturgicalCalendar = () => {
       ) : (
         <Text bold color={terminalColor}>{dateStr}</Text>
       )}
-      <Box><Text bold>Season:</Text><Text> {liturgical.season}</Text></Box>
-      <Box><Text bold>Feast:</Text><Text> {liturgical.name}</Text></Box>
-      <Box><Text bold>Rank:</Text><Text> {liturgical.rank}</Text></Box>
-      <Box><Text bold>Color:</Text><Text color={terminalColor}> ■ {liturgical.color}</Text></Box>
+      <Box>
+        <Text bold color={theme.colors.primary}>Season:</Text>
+        <Text color={theme.colors.text}> {liturgical.season}</Text>
+      </Box>
+      <Box>
+        <Text bold color={theme.colors.primary}>Feast:</Text>
+        <Text color={theme.colors.text}> {liturgical.name}</Text>
+      </Box>
+      <Box>
+        <Text bold color={theme.colors.primary}>Rank:</Text>
+        <Text color={theme.colors.text}> {liturgical.rank}</Text>
+      </Box>
+      <Box>
+        <Text bold color={theme.colors.primary}>Color:</Text>
+        <Text color={terminalColor}> ■ {liturgical.color}</Text>
+      </Box>
     </Box>
   );
 };

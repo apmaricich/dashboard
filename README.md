@@ -36,6 +36,7 @@ layout:
   strategy: grid
   maxCols: 3
   theme: liturgical
+  # Options: liturgical, seasonal
   header: "Dashboard"
   footer: "APM"
 
@@ -67,7 +68,7 @@ widgets:
 |-------|------|---------|-------------|
 | `strategy` | string | `"grid"` | Layout algorithm (`grid` currently supported) |
 | `maxCols` | integer | 3 | Maximum number of columns for grid layout |
-| `theme` | string | `"liturgical"` | Theme identifier (currently `liturgical`) |
+| `theme` | string | `"liturgical"` | Theme identifier (`liturgical`, `seasonal`) |
 | `header` | string | `"Dashboard"` | Header text displayed at the top |
 | `footer` | string | - | Optional footer text |
 

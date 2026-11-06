@@ -11,12 +11,12 @@ import type { Theme, ThemeContext } from './index.js';
  * Gold: Special solemnities
  */
 const COLOR_MAP: Record<string, string> = {
-    RED: '#ff0000',
-    ROSE: '#ffaaaa',
-    PURPLE: '#8800cc',
-    GREEN: '#00aa00',
-    WHITE: '#ffffff',
-    GOLD: '#ffcc00',
+    RED: 'red',
+    ROSE: 'pink',
+    PURPLE: 'magenta',
+    GREEN: 'green',
+    WHITE: 'white',
+    GOLD: 'yellow',
 };
 
 /**

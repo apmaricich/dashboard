@@ -2,7 +2,8 @@ layout:
   strategy: grid
   maxCols: 3
   theme: liturgical
-  header: "Dashboard - APM"
+  # theme: seasonal
+  header: "Veritas"
   footer: "APM"
 
 widgets:

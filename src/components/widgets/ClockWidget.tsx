@@ -8,7 +8,7 @@ import { useWidgetContext } from "../FoundationWidget.js";
  * Displays current time in a large, easily readable format: HH:MM:SS
  */
 const ClockWidget = () => {
-  const { layout } = useWidgetContext();
+  const { layout, theme } = useWidgetContext();
   const [timeString, setTimeString] = useState("");
 
   // Update clock every second
@@ -51,7 +51,7 @@ const ClockWidget = () => {
       width={layout.width}
     >
       <Box alignItems="center">
-        <BigText text={timeString} font={font} />
+        <BigText text={timeString} font={font} colors={[theme.colors.accent]} />
       </Box>
     </Box>
   );

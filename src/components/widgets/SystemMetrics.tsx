@@ -43,34 +43,34 @@ const SystemMetrics = () => {
   const cpuRow = useMemo(
     () => (
       <Box>
-        <Text bold color="white">{CPU_LABEL}</Text>
-        <Text bold color="cyan"> {cpuPercent}%</Text>
-        <Text color="blue"> [{renderBar(cpuPercent, BAR_WIDTH)}]</Text>
+        <Text bold color={theme.colors.primary}>{CPU_LABEL}</Text>
+        <Text bold color={theme.colors.accent}> {cpuPercent}%</Text>
+        <Text color={theme.colors.border}> [{renderBar(cpuPercent, BAR_WIDTH)}]</Text>
       </Box>
     ),
-    [cpuPercent]
+    [cpuPercent, theme.colors]
   );
 
   const memRow = useMemo(
     () => (
       <Box>
-        <Text bold color="white">{MEM_LABEL}</Text>
-        <Text bold color="cyan"> {memUsed} / {memTotal}</Text>
-        <Text color="blue"> [{renderBar(memPercent, BAR_WIDTH)}]</Text>
+        <Text bold color={theme.colors.primary}>{MEM_LABEL}</Text>
+        <Text bold color={theme.colors.accent}> {memUsed} / {memTotal}</Text>
+        <Text color={theme.colors.border}> [{renderBar(memPercent, BAR_WIDTH)}]</Text>
       </Box>
     ),
-    [memPercent, memUsed, memTotal]
+    [memPercent, memUsed, memTotal, theme.colors]
   );
 
   const gpuRow = useMemo(
     () => (
       <Box>
-        <Text bold color="white">{GPU_LABEL}</Text>
-        <Text bold color="green"> {gpuPercent}%</Text>
-        <Text color="blue"> [{renderBar(gpuPercent, BAR_WIDTH)}]</Text>
+        <Text bold color={theme.colors.primary}>{GPU_LABEL}</Text>
+        <Text bold color={theme.colors.accent}> {gpuPercent}%</Text>
+        <Text color={theme.colors.border}> [{renderBar(gpuPercent, BAR_WIDTH)}]</Text>
       </Box>
     ),
-    [gpuPercent]
+    [gpuPercent, theme.colors]
   );
 
   if (error) {

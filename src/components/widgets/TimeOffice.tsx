@@ -57,14 +57,14 @@ const TimeOffice = () => {
 
   return (
     <Box flexDirection="column">
-      <BigText text={office} font="tiny" colors={["yellow"]} />
+      <BigText text={office} font="tiny" colors={[theme.colors.accent]} />
       <Box>
-        <Text bold color="white">Local:</Text>
-        <Text bold color="cyan"> {localTime}</Text>
+        <Text bold color={theme.colors.primary}>Local:</Text>
+        <Text bold color={theme.colors.accent}> {localTime}</Text>
       </Box>
       <Box>
-        <Text bold color="white">UTC:</Text>
-        <Text bold color="green"> {utcTime}</Text>
+        <Text bold color={theme.colors.primary}>UTC:</Text>
+        <Text bold color={theme.colors.primary}> {utcTime}</Text>
       </Box>
     </Box>
   );

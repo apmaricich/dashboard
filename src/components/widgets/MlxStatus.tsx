@@ -65,16 +65,16 @@ const MlxStatus = () => {
 
   const displayLines = [
     <Box key="model">
-      <Text bold>Model:</Text>
-      <Text> {status.model}</Text>
+      <Text bold color={theme.colors.primary}>Model:</Text>
+      <Text color={theme.colors.text}> {status.model}</Text>
     </Box>,
     <Box key="state">
-      <Text bold>State:</Text>
+      <Text bold color={theme.colors.primary}>State:</Text>
       <Text color={stateColor}> {status.state}</Text>
     </Box>,
     <Box key="memory">
-      <Text bold>Memory:</Text>
-      <Text> {formatBytes(status.bytesResident)}</Text>
+      <Text bold color={theme.colors.primary}>Memory:</Text>
+      <Text color={theme.colors.text}> {formatBytes(status.bytesResident)}</Text>
       {status.bytesOnDisk > 0 && (
         <Text dimColor> ({formatBytes(status.bytesOnDisk)} disk)</Text>
       )}
@@ -84,8 +84,8 @@ const MlxStatus = () => {
   if (status.contextLength !== null) {
     displayLines.push(
       <Box key="context">
-        <Text bold>Context:</Text>
-        <Text> {formatContextLength(status.contextLength)} tokens</Text>
+        <Text bold color={theme.colors.primary}>Context:</Text>
+        <Text color={theme.colors.text}> {formatContextLength(status.contextLength)} tokens</Text>
       </Box>
     );
   }
@@ -93,8 +93,8 @@ const MlxStatus = () => {
   if (status.quantization) {
     displayLines.push(
       <Box key="quant">
-        <Text bold>Quantization:</Text>
-        <Text> {status.quantization}</Text>
+        <Text bold color={theme.colors.primary}>Quantization:</Text>
+        <Text color={theme.colors.text}> {status.quantization}</Text>
       </Box>
     );
   }
@@ -106,8 +106,8 @@ const MlxStatus = () => {
     }
     displayLines.push(
       <Box key="arch">
-        <Text bold>Architecture:</Text>
-        <Text> {archText}</Text>
+        <Text bold color={theme.colors.primary}>Architecture:</Text>
+        <Text color={theme.colors.text}> {archText}</Text>
       </Box>
     );
   }
@@ -115,8 +115,8 @@ const MlxStatus = () => {
   if (status.capabilities.length > 0) {
     displayLines.push(
       <Box key="caps">
-        <Text bold>Capabilities:</Text>
-        <Text> {status.capabilities.join(", ")}</Text>
+        <Text bold color={theme.colors.primary}>Capabilities:</Text>
+        <Text color={theme.colors.text}> {status.capabilities.join(", ")}</Text>
       </Box>
     );
   }
