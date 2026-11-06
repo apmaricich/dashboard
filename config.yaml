@@ -38,3 +38,10 @@ widgets:
       latitude: 38.9443
       longitude: -76.831
       temperatureUnit: fahrenheit
+  - name: "Work Progress"
+    type: workday
+    order: 7
+    refresh: 60
+    params:
+      startHour: 8
+      endHour: 16

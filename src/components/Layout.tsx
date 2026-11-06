@@ -10,6 +10,7 @@ import TimeOffice from "./widgets/TimeOffice.js";
 import MlxStatus from "./widgets/MlxStatus.js";
 import ClockWidget from "./widgets/ClockWidget.js";
 import Weather from "./widgets/Weather.js";
+import WorkDay from "./widgets/WorkDay.js";
 
 /**
  * Widget type registry mapping widget type names to React components.
@@ -22,6 +23,7 @@ widgetRegistry.set("time", TimeOffice);
 widgetRegistry.set("mlx", MlxStatus);
 widgetRegistry.set("clock", ClockWidget);
 widgetRegistry.set("weather", Weather);
+widgetRegistry.set("workday", WorkDay);
 
 export interface LayoutProps {
   /** Widget configurations to render */
