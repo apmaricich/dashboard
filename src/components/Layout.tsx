@@ -9,6 +9,7 @@ import LiturgicalCalendar from "./widgets/LiturgicalCalendar.js";
 import TimeOffice from "./widgets/TimeOffice.js";
 import MlxStatus from "./widgets/MlxStatus.js";
 import ClockWidget from "./widgets/ClockWidget.js";
+import LiturgicalYearProgress from "./widgets/LiturgicalYearProgress.js";
 import Weather from "./widgets/Weather.js";
 import WorkDay from "./widgets/WorkDay.js";
 
@@ -19,6 +20,7 @@ const widgetRegistry = new Map<string, React.ComponentType>();
 
 widgetRegistry.set("system", SystemMetrics);
 widgetRegistry.set("liturgical", LiturgicalCalendar);
+widgetRegistry.set("liturgical_year", LiturgicalYearProgress);
 widgetRegistry.set("time", TimeOffice);
 widgetRegistry.set("mlx", MlxStatus);
 widgetRegistry.set("clock", ClockWidget);

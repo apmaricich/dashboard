@@ -1,4 +1,4 @@
-import { queryFor } from 'romcal';
+import { queryFor, calendarFor } from 'romcal';
 
 export interface LiturgicalInfo {
   date: Date;
@@ -6,6 +6,24 @@ export interface LiturgicalInfo {
   rank: 'Solemnity' | 'Feast' | 'Memorial' | 'Optional Memorial' | 'Commemoration' | 'Weekday';
   season: string;
   color: string;
+}
+
+export interface SeasonInfo {
+  name: string;
+  startDay: number;
+  endDay: number;
+  daysElapsed: number;
+  totalDays: number;
+  proportion: number;
+}
+
+export interface LiturgicalYearData {
+  totalDays: number;
+  currentSeason: string;
+  currentSeasonDay: number;
+  currentSeasonIndex: number;
+  seasons: SeasonInfo[];
+  progress: number;
 }
 
 function normalizeRank(type: string): LiturgicalInfo['rank'] {
@@ -52,4 +70,109 @@ export function getLiturgicalInfo(date?: Date): LiturgicalInfo {
       color: 'green',
     };
   }
+}
+
+export function liturgicalYear(): LiturgicalYearData {
+  const now = new Date();
+  const year = now.getFullYear();
+
+  const days = calendarFor(year) as any[];
+
+  if (days.length === 0) {
+    return {
+      totalDays: 0,
+      currentSeason: 'Unknown',
+      currentSeasonDay: 0,
+      currentSeasonIndex: 0,
+      seasons: [],
+      progress: 0,
+    };
+  }
+
+  // Find current day index
+  let currentDayIndex = 0;
+  let currentSeasonIndex = 0;
+  for (let i = 0; i < days.length; i++) {
+    if (new Date(days[i].moment).getTime() <= now.getTime()) {
+      currentDayIndex = i;
+    } else {
+      break;
+    }
+  }
+
+  // Group into seasons using data.season.value
+  const seasons: Array<{ name: string; days: any[] }> = [];
+  let currentSeasonName = days[0].data?.season?.value ?? 'Ordinary Time';
+  let currentSeason: { name: string; days: any[] } = { name: currentSeasonName, days: [] };
+
+  for (let j = 0; j < days.length; j++) {
+    const day = days[j];
+    const seasonName = day.data?.season?.value ?? 'Ordinary Time';
+    if (seasonName !== currentSeason.name) {
+      seasons.push(currentSeason);
+      currentSeason = { name: seasonName, days: [] };
+    }
+    currentSeason.days.push(day);
+  }
+  seasons.push(currentSeason);
+
+  // Merge consecutive Ordinary Time
+  const merged: { name: string; days: typeof days }[] = [];
+  let i = 0;
+  while (i < seasons.length) {
+    let s = { name: seasons[i].name, days: seasons[i].days };
+    while (i + 1 < seasons.length && seasons[i + 1].name === s.name) {
+      s.days = [...s.days, ...seasons[i + 1].days];
+      i++;
+    }
+    merged.push(s);
+    i++;
+  }
+
+  const totalDays = days.length;
+  let dayCount = 0;
+  const seasonInfo: SeasonInfo[] = [];
+  let currentSeasonInfo = merged[0];
+  let seasonIdx = 0;
+
+  for (const season of merged) {
+    const seasonDays = season.days.length;
+    const seasonStart = dayCount;
+    const seasonEnd = dayCount + seasonDays - 1;
+
+    if (currentDayIndex >= seasonStart && currentDayIndex <= seasonEnd) {
+      currentSeasonInfo = season;
+      currentSeasonIndex = seasonIdx;
+    }
+
+    let daysElapsed = 0;
+    if (dayCount <= currentDayIndex && currentDayIndex < dayCount + seasonDays) {
+      daysElapsed = currentDayIndex - dayCount + 1;
+    } else if (dayCount + seasonDays <= currentDayIndex) {
+      daysElapsed = seasonDays;
+    } else {
+      daysElapsed = 0;
+    }
+
+    seasonInfo.push({
+      name: season.name,
+      startDay: seasonStart + 1,
+      endDay: seasonEnd + 1,
+      daysElapsed,
+      totalDays: seasonDays,
+      proportion: daysElapsed / seasonDays,
+    });
+
+    dayCount += seasonDays;
+    seasonIdx++;
+  }
+
+  return {
+    totalDays,
+    currentSeason: currentSeasonInfo.name,
+    currentSeasonDay: currentDayIndex - (dayCount - currentSeasonInfo.days.length),
+    currentSeasonIndex: currentSeasonIndex,
+    seasons: seasonInfo,
+    progress: currentDayIndex / totalDays,
+  };
 }

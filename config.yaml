@@ -8,40 +8,44 @@ layout:
   footer: "Success is defined by your willingness to keep going."
 
 widgets:
-  - name: "Clock"
-    type: clock
-    order: 1
-    refresh: 1
-  - name: "Time & Office"
-    type: time
-    order: 2
-    refresh: 30
-  - name: "Liturgical Calendar"
-    type: liturgical
-    order: 3
-    refresh: 60
-  - name: "System Metrics"
-    type: system
-    order: 4
-    refresh: 5
-  - name: "MLX Status"
-    type: mlx
-    order: 5
-    refresh: 30
-    params:
-      endpoint: "http://localhost:8080"
-  - name: "Weather (Bowie, MD)"
-    type: weather
-    order: 6
-    refresh: 600
-    params:
-      latitude: 38.9443
-      longitude: -76.831
-      temperatureUnit: fahrenheit
-  - name: "Work Progress"
-    type: workday
-    order: 7
-    refresh: 60
-    params:
-      startHour: 8
-      endHour: 16
+  # - name: "Clock"
+    # type: clock
+    # order: 1
+    # refresh: 1
+  # - name: "Time & Office"
+    # type: time
+    # order: 2
+    # refresh: 30
+  # - name: "Liturgical Calendar"
+    # type: liturgical
+    # order: 3
+    # refresh: 60
+  # - name: "System Metrics"
+    # type: system
+    # order: 4
+    # refresh: 5
+  # - name: "MLX Status"
+    # type: mlx
+    # order: 5
+    # refresh: 30
+    # params:
+      # endpoint: "http://localhost:8080"
+  # - name: "Weather (Bowie, MD)"
+    # type: weather
+    # order: 6
+    # refresh: 600
+    # params:
+      # latitude: 38.9443
+      # longitude: -76.831
+      # temperatureUnit: fahrenheit
+  # - name: "Work Progress"
+    # type: workday
+    # order: 7
+    # refresh: 60
+    # params:
+      # startHour: 8
+      # endHour: 16
+  - name: "Liturgical Year Progress"
+    type: liturgical_year
+    order: 8
+    refresh: 3600

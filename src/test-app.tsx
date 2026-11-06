@@ -1,99 +1,48 @@
 import React from "react";
 import { render, Box, useWindowSize, Text } from "ink";
 import FoundationWidget from "./components/FoundationWidget.js";
-import ClockWidget from "./components/widgets/ClockWidget.js";
-import LiturgicalCalendar from "./components/widgets/LiturgicalCalendar.js";
-import TimeOffice from "./components/widgets/TimeOffice.js";
-import MlxStatus from "./components/widgets/MlxStatus.js";
-import SystemMetrics from "./components/widgets/SystemMetrics.js";
+import LiturgicalYearProgress from "./components/widgets/LiturgicalYearProgress.js";
 import { getTheme } from "./themes/index.js";
 import { WidgetConfig } from "./config/loader.js";
-import { getLayoutStrategy, LayoutResult } from "./lib/layout.js";
+import { getLayoutStrategy } from "./lib/layout.js";
 
-// Test app with multiple widgets side by side
+// Test app showing only the LiturgicalYearProgress widget
 function TestApp() {
   const theme = getTheme("liturgical", { date: new Date() });
   const { columns, rows } = useWindowSize();
 
-  const config1: WidgetConfig = {
-    name: "Clock",
-    type: "clock",
+  const config: WidgetConfig = {
+    name: "Liturgical Year",
+    type: "liturgical_year",
     order: 1,
-    refresh: 0
+    refresh: 3600
   };
 
-  const config2: WidgetConfig = {
-    name: "Liturgical Calendar",
-    type: "liturgical-calendar",
-    order: 2,
-    refresh: 0
-  };
-
-  const config3: WidgetConfig = {
-    name: "Time & Office",
-    type: "time-office",
-    order: 3,
-    refresh: 0
-  };
-
-  const config4: WidgetConfig = {
-    name: "MLX Status",
-    type: "mlx-status",
-    order: 4,
-    refresh: 0
-  };
-
-  const config5: WidgetConfig = {
-    name: "System Metrics",
-    type: "system-metrics",
-    order: 5,
-    refresh: 0
-  };
-
-  // Header height = 3 (border top, content, border bottom)
-  // Footer height = 3 (border top, content, border bottom)
-  // No spacing rows
-  const HEADER_HEIGHT = 3;
-  const FOOTER_HEIGHT = 3;
-  const widgetAreaHeight = rows - HEADER_HEIGHT - FOOTER_HEIGHT;
-
-  const allConfigs = [config1, config2, config3, config4, config5];
+  const widgetAreaHeight = rows - 6; // header + footer
   const layouts = getLayoutStrategy("grid").compute(
-    allConfigs,
+    [config],
     columns,
     widgetAreaHeight,
-    { maxCols: 3 }
+    { maxCols: 1 }
   );
-
-  // Debug: show layout positions
-  console.error("Layout positions:");
-  layouts.forEach((l, i) => {
-    console.error(`  Widget ${i}: x=${l.x}, y=${l.y}, w=${l.width}, h=${l.height}`);
-  });
 
   return (
     <Box flexDirection="column">
       <Box width="100%" borderStyle="single" borderColor={theme.colors.border}>
-        <Text bold color={theme.colors.primary}> Dashboard</Text>
+        <Text bold color={theme.colors.primary}> Liturgical Year Progress</Text>
       </Box>
       <Box width={columns} height={widgetAreaHeight} position="relative">
-        {layouts.map((layout, i) => (
-          <FoundationWidget
-            key={i}
-            config={allConfigs[i]}
-            layout={layout}
-            theme={theme}
-            position="absolute"
-            left={layout.x}
-            top={layout.y}
-          >
-            {i === 0 && <ClockWidget />}
-            {i === 1 && <LiturgicalCalendar />}
-            {i === 2 && <TimeOffice />}
-            {i === 3 && <MlxStatus />}
-            {i === 4 && <SystemMetrics />}
-          </FoundationWidget>
-        ))}
+        <FoundationWidget
+          key="liturgical-year"
+          config={config}
+          layout={layouts[0]}
+          theme={theme}
+          position="absolute"
+          left={layouts[0].x}
+          top={layouts[0].y}
+        >
+          <LiturgicalYearProgress />
+        </FoundationWidget>
       </Box>
       <Box width="100%" borderStyle="single" borderColor={theme.colors.border}>
         <Text bold color={theme.colors.primary}> APM</Text>
@@ -105,5 +54,5 @@ function TestApp() {
 const { unmount } = render(<TestApp />);
 
 if (process.argv.includes("--once")) {
-  setTimeout(() => unmount(), 100);
+  setTimeout(() => unmount(), 5000);
 }
