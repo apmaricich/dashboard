@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { Box, Text } from "ink";
+import BigText from "ink-big-text";
 import { getTimeData } from "../../lib/time.js";
 import useRefresh from "../../hooks/useRefresh.js";
 import { useWidgetContext } from "../FoundationWidget.js";
@@ -52,8 +53,12 @@ const TimeOffice = () => {
   const utcMinute = String(time.utc.getMinutes()).padStart(2, "0");
   const utcTime = `${utcHour}:${utcMinute}`;
 
+  const office = time.liturgy + "\n" + time.liturgyTimeRange;
+
   return (
     <Box flexDirection="column">
+      <BigText text={office} font="tiny" colors={["yellow"]} />
+      <Text color="gray">({time.liturgyTimeRange})</Text>
       <Box>
         <Text bold color="white">Local:</Text>
         <Text bold color="cyan"> {localTime}</Text>
@@ -61,10 +66,6 @@ const TimeOffice = () => {
       <Box>
         <Text bold color="white">UTC:</Text>
         <Text bold color="green"> {utcTime}</Text>
-      </Box>
-      <Box>
-        <Text bold color="white">Office:</Text>
-        <Text bold color="yellow"> {time.liturgy} ({time.liturgyTimeRange})</Text>
       </Box>
     </Box>
   );
