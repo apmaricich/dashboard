@@ -5,7 +5,7 @@ layout:
   # theme: seasonal
   # theme: vibrant
   header: "Veritas"
-  footer: "APM"
+  footer: "Success is defined by your willingness to keep going."
 
 widgets:
   - name: "Clock"

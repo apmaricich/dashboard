@@ -8,10 +8,15 @@ import {
   Box,
   Text,
 } from "ink";
+import { readFileSync } from "fs";
 import { loadConfig, DashboardConfig } from "./config/loader.js";
 import { getTheme, Theme } from "./themes/index.js";
 import { getLayoutStrategy, LayoutResult } from "./lib/layout.js";
 import Layout from "./components/Layout.js";
+
+// Read version from package.json (from project root)
+const pkg = JSON.parse(readFileSync("package.json", "utf-8"));
+const APP_VERSION = pkg.version;
 
 /**
  * Main dashboard component.
@@ -88,6 +93,11 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
           columns={columns}
           rows={rows}
         />
+      </Box>
+      <Box height={1}>
+        <Text bold color="cyan">{config.layout.footer}</Text>
+        <Box flexGrow={1} />
+        <Text color="gray">v{APP_VERSION}</Text>
       </Box>
     </Box>
   );
