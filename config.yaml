@@ -1,6 +1,6 @@
 layout:
   strategy: grid
-  maxCols: 4
+  maxCols: 2
   theme: liturgical
   # theme: seasonal
   # theme: vibrant
@@ -12,13 +12,13 @@ widgets:
     type: clock
     order: 1
     refresh: 1
-  - name: "Time & Office"
-    type: time
-    order: 2
-    refresh: 30
+  - name: "Office of the Hours"
+    type: office
+    order: 3
+    refresh: 60
   - name: "Liturgical Calendar"
     type: liturgical
-    order: 3
+    order: 2
     refresh: 60
     params:
       showProgress: true

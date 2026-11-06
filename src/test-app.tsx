@@ -1,22 +1,21 @@
 import React from "react";
 import { render, Box, useWindowSize, Text } from "ink";
 import FoundationWidget from "./components/FoundationWidget.js";
-import LiturgicalCalendar from "./components/widgets/LiturgicalCalendar.js";
+import Office from "./components/widgets/Office.js";
 import { getTheme } from "./themes/index.js";
 import { WidgetConfig } from "./config/loader.js";
 import { getLayoutStrategy } from "./lib/layout.js";
 
-// Test app showing the LiturgicalCalendar widget with embedded progress
+// Test app showing the Office of the Hours widget
 function TestApp() {
   const theme = getTheme("liturgical", { date: new Date() });
   const { columns, rows } = useWindowSize();
 
   const config: WidgetConfig = {
-    name: "Liturgical Calendar",
-    type: "liturgical-calendar",
+    name: "Office of the Hours",
+    type: "office",
     order: 1,
-    refresh: 3600,
-    params: { showProgress: true }
+    refresh: 60,
   };
 
   const widgetAreaHeight = rows - 6; // header + footer
@@ -30,11 +29,11 @@ function TestApp() {
   return (
     <Box flexDirection="column">
       <Box width="100%" borderStyle="single" borderColor={theme.colors.border}>
-        <Text bold color={theme.colors.primary}> Liturgical Calendar</Text>
+        <Text bold color={theme.colors.primary}> Office of the Hours</Text>
       </Box>
       <Box width={columns} height={widgetAreaHeight} position="relative">
         <FoundationWidget
-          key="liturgical-calendar"
+          key="office"
           config={config}
           layout={layouts[0]}
           theme={theme}
@@ -42,7 +41,7 @@ function TestApp() {
           left={layouts[0].x}
           top={layouts[0].y}
         >
-          <LiturgicalCalendar config={config} />
+          <Office />
         </FoundationWidget>
       </Box>
       <Box width="100%" borderStyle="single" borderColor={theme.colors.border}>
