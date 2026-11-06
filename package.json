@@ -14,6 +14,7 @@
     "lint:fix": "eslint src/**/*.ts src/**/*.tsx test/**/*.ts test/**/*.tsx --fix"
   },
   "dependencies": {
+    "@akaguny/open-meteo-wmo-to-emoji": "^0.2.0",
     "@mishieck/ink-titled-box": "^0.4.2",
     "ink": "^8.0.0",
     "ink-big-text": "^2.0.0",

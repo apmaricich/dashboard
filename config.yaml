@@ -30,3 +30,11 @@ widgets:
     refresh: 30
     params:
       endpoint: "http://localhost:8080"
+  - name: "Weather (Bowie, MD)"
+    type: weather
+    order: 6
+    refresh: 600
+    params:
+      latitude: 38.9443
+      longitude: -76.831
+      temperatureUnit: fahrenheit

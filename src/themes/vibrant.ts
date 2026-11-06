@@ -6,11 +6,11 @@ import { ThemeFunction } from './index.js';
 const vibrantTheme: ThemeFunction = () => ({
   id: 'vibrant',
   colors: {
-    primary: 'brightYellow',
-    border: 'brightMagenta',
-    text: 'brightCyan',
+    primary: 'yellowBright',
+    border: 'magentaBright',
+    text: 'cyanBright',
     background: 'blue',
-    accent: 'brightGreen',
+    accent: 'greenBright',
   },
   borderStyle: 'double',
 });
