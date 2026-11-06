@@ -187,8 +187,35 @@ const LiturgicalYearProgress = () => {
   const markerIndex = Math.floor((currentDay / yearData.totalDays) * (barWidth - 2));
   const weekNumber = Math.floor(currentDay / 7);
 
+  // Holy day indicators at specific positions
+  const christmasIndex = Math.floor(11 / yearData.totalDays * (barWidth - 2));
+  const easterIndex = Math.floor(95 / yearData.totalDays * (barWidth - 2));
+  const pentecostIndex = Math.floor(144 / yearData.totalDays * (barWidth - 2));
+  const corpusChristiIndex = Math.floor(154 / yearData.totalDays * (barWidth - 2));
+  const lentIndex = Math.floor(49 / yearData.totalDays * (barWidth - 2));
+  const adventIndex = Math.floor(333 / yearData.totalDays * (barWidth - 2));
+
+  // Holy day indicator row
+  const HolyDayIndicators = () => {
+    const row = new Array(barWidth).fill(" ");
+    row[christmasIndex] = "🎄";
+    row[easterIndex] = "🌿";
+    row[pentecostIndex] = "🔥";
+    row[corpusChristiIndex] = "🍞";
+    row[lentIndex] = "🌾";
+    row[adventIndex] = "🕯️";
+    return (
+      <Box>
+        {row.map((ch, i) => (
+          <Text key={`holy-${i}`}>{ch}</Text>
+        ))}
+      </Box>
+    );
+  };
+
   return (
     <Box flexDirection="column">
+      <HolyDayIndicators />
       <ProgressBar />
       <PositionIndicator indicatorLeft={markerIndex >= barWidth / 2} />
     </Box>
