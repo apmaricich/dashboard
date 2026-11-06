@@ -218,6 +218,11 @@ const LiturgicalYearProgress = () => {
       <HolyDayIndicators />
       <ProgressBar />
       <PositionIndicator indicatorLeft={markerIndex >= barWidth / 2} />
+      <Box>
+        <Text color="gray">
+          {"🎄Christmas 🌿Easter 🔥Pentecost 🍞CorpusChristi 🌾Lent 🕯️Advent"}
+        </Text>
+      </Box>
     </Box>
   );
 };
