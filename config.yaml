@@ -1,6 +1,6 @@
 layout:
   strategy: grid
-  maxCols: 2
+  maxCols: 3
   theme: liturgical
   # theme: seasonal
   # theme: vibrant
@@ -8,6 +8,10 @@ layout:
   footer: "Success is defined by your willingness to keep going."
 
 widgets:
+  - name: "Clock"
+    type: clock
+    order: 1
+    refresh: 1
   - name: "Clock"
     type: clock
     order: 1

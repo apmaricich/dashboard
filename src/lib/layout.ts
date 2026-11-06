@@ -74,19 +74,31 @@ export function gridLayoutStrategy(options?: LayoutOptions): LayoutStrategy {
 
       const numRows = Math.ceil(results.length / maxCols);
       const cellHeight = Math.floor(containerHeight / numRows);
-      const cellWidth = Math.floor(containerWidth / maxCols);
 
-      return results.map(({ index }) => {
-        const row = Math.floor(index / maxCols);
-        const col = index % maxCols;
+      // Group widgets into rows
+      const rows: Array<Array<{ widget: WidgetConfig; index: number }>> = [];
+      for (let row = 0; row < numRows; row++) {
+        rows.push(results.slice(row * maxCols, (row + 1) * maxCols));
+      }
 
-        return {
-          x: col * cellWidth,
-          y: row * cellHeight,
-          width: cellWidth,
-          height: cellHeight
-        };
-      });
+      // Calculate layout with dynamic width per row
+      const layoutResults: LayoutResult[] = [];
+      for (let row = 0; row < rows.length; row++) {
+        const rowWidgets = rows[row];
+        const cellWidth = Math.floor(containerWidth / rowWidgets.length);
+
+        for (let col = 0; col < rowWidgets.length; col++) {
+          const { index } = rowWidgets[col];
+          layoutResults[index] = {
+            x: col * cellWidth,
+            y: row * cellHeight,
+            width: cellWidth,
+            height: cellHeight
+          };
+        }
+      }
+
+      return layoutResults;
     }
   };
 }
