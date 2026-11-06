@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { Box, Text } from "ink";
+import BigText from "ink-big-text";
 import { getLiturgicalInfo } from "../../lib/liturgical.js";
 import useRefresh from "../../hooks/useRefresh.js";
 import { useWidgetContext } from "../FoundationWidget.js";
@@ -14,7 +15,7 @@ import { useWidgetContext } from "../FoundationWidget.js";
  * - Liturgical color
  */
 const LiturgicalCalendar = () => {
-  const { theme } = useWidgetContext();
+  const { theme, layout } = useWidgetContext();
 
   // Stable data function via useCallback to prevent infinite re-renders
   const dataFn = useCallback(async () => getLiturgicalInfo(), []);
@@ -63,9 +64,18 @@ const LiturgicalCalendar = () => {
 
   const terminalColor = colorMap[liturgical.color] || "green";
 
+  // Determine if we have enough width for large text
+  // "tiny" font is approximately 2 chars wide per character
+  // Date string is typically 15-20 chars, so we need at least 30 chars wide
+  const useLargeText = layout.width >= 60;
+
   return (
     <Box flexDirection="column">
-      <Text bold color={terminalColor}>{dateStr}</Text>
+      {useLargeText ? (
+        <BigText text={dateStr} font="tiny" colors={[terminalColor]} />
+      ) : (
+        <Text bold color={terminalColor}>{dateStr}</Text>
+      )}
       <Box><Text bold>Season:</Text><Text> {liturgical.season}</Text></Box>
       <Box><Text bold>Feast:</Text><Text> {liturgical.name}</Text></Box>
       <Box><Text bold>Rank:</Text><Text> {liturgical.rank}</Text></Box>
