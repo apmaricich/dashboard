@@ -1,6 +1,6 @@
 layout:
   strategy: grid
-  maxCols: 3
+  maxCols: 4
   theme: liturgical
   # theme: seasonal
   # theme: vibrant
@@ -20,6 +20,8 @@ widgets:
     type: liturgical
     order: 3
     refresh: 60
+    params:
+      showProgress: true
   - name: "System Metrics"
     type: system
     order: 4
@@ -45,7 +47,3 @@ widgets:
     params:
       startHour: 8
       endHour: 16
-  - name: "Liturgical Year Progress"
-    type: liturgical_year
-    order: 8
-    refresh: 3600

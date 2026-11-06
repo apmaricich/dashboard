@@ -67,6 +67,7 @@ const DEFAULT_CONFIG: DashboardConfig = {
       type: "liturgical",
       order: 1,
       refresh: 3600,
+      params: { showProgress: true },
     },
     {
       name: "Time & Office",

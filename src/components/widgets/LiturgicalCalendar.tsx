@@ -4,6 +4,8 @@ import BigText from "ink-big-text";
 import { getLiturgicalInfo } from "../../lib/liturgical.js";
 import useRefresh from "../../hooks/useRefresh.js";
 import { useWidgetContext } from "../FoundationWidget.js";
+import LiturgicalYearProgress from "./LiturgicalYearProgress.js";
+import { WidgetConfig } from "../../config/loader.js";
 
 /**
  * Liturgical Calendar widget that displays today's liturgical information.
@@ -14,7 +16,7 @@ import { useWidgetContext } from "../FoundationWidget.js";
  * - Rank (Solemnity, Feast, Memorial, etc.)
  * - Liturgical color
  */
-const LiturgicalCalendar = () => {
+const LiturgicalCalendar = ({ config }: { config?: WidgetConfig }) => {
   const { theme, layout } = useWidgetContext();
 
   // Stable data function via useCallback to prevent infinite re-renders
@@ -22,6 +24,9 @@ const LiturgicalCalendar = () => {
 
   // Refresh every hour (3600 seconds) - liturgical calendar only changes daily
   const { data: liturgical, isLoading, error } = useRefresh(3600, dataFn);
+
+  // Check if progress bar should be shown (default: true)
+  const showProgress = config?.params?.showProgress !== false;
 
   if (isLoading) {
     return (
@@ -92,6 +97,11 @@ const LiturgicalCalendar = () => {
         <Text bold color={theme.colors.primary}>Color:</Text>
         <Text color={terminalColor}> ■ {liturgical.color}</Text>
       </Box>
+      {showProgress && (
+        <Box marginY={1}>
+          <LiturgicalYearProgress />
+        </Box>
+      )}
     </Box>
   );
 };

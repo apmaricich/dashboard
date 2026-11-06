@@ -16,7 +16,7 @@ import WorkDay from "./widgets/WorkDay.js";
 /**
  * Widget type registry mapping widget type names to React components.
  */
-const widgetRegistry = new Map<string, React.ComponentType>();
+const widgetRegistry = new Map<string, React.ComponentType<{ config?: WidgetConfig }>>();
 
 widgetRegistry.set("system", SystemMetrics);
 widgetRegistry.set("liturgical", LiturgicalCalendar);
@@ -69,7 +69,7 @@ const Layout = ({ widgets, layout, theme, columns, rows }: LayoutProps) => {
             left={layoutInfo.x}
             top={layoutInfo.y}
           >
-            <WidgetComponent />
+            <WidgetComponent config={widget} />
           </FoundationWidget>
         );
       })}

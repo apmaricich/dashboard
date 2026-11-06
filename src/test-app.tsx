@@ -1,21 +1,22 @@
 import React from "react";
 import { render, Box, useWindowSize, Text } from "ink";
 import FoundationWidget from "./components/FoundationWidget.js";
-import LiturgicalYearProgress from "./components/widgets/LiturgicalYearProgress.js";
+import LiturgicalCalendar from "./components/widgets/LiturgicalCalendar.js";
 import { getTheme } from "./themes/index.js";
 import { WidgetConfig } from "./config/loader.js";
 import { getLayoutStrategy } from "./lib/layout.js";
 
-// Test app showing only the LiturgicalYearProgress widget
+// Test app showing the LiturgicalCalendar widget with embedded progress
 function TestApp() {
   const theme = getTheme("liturgical", { date: new Date() });
   const { columns, rows } = useWindowSize();
 
   const config: WidgetConfig = {
-    name: "Liturgical Year",
-    type: "liturgical_year",
+    name: "Liturgical Calendar",
+    type: "liturgical-calendar",
     order: 1,
-    refresh: 3600
+    refresh: 3600,
+    params: { showProgress: true }
   };
 
   const widgetAreaHeight = rows - 6; // header + footer
@@ -29,11 +30,11 @@ function TestApp() {
   return (
     <Box flexDirection="column">
       <Box width="100%" borderStyle="single" borderColor={theme.colors.border}>
-        <Text bold color={theme.colors.primary}> Liturgical Year Progress</Text>
+        <Text bold color={theme.colors.primary}> Liturgical Calendar</Text>
       </Box>
       <Box width={columns} height={widgetAreaHeight} position="relative">
         <FoundationWidget
-          key="liturgical-year"
+          key="liturgical-calendar"
           config={config}
           layout={layouts[0]}
           theme={theme}
@@ -41,7 +42,7 @@ function TestApp() {
           left={layouts[0].x}
           top={layouts[0].y}
         >
-          <LiturgicalYearProgress />
+          <LiturgicalCalendar config={config} />
         </FoundationWidget>
       </Box>
       <Box width="100%" borderStyle="single" borderColor={theme.colors.border}>
