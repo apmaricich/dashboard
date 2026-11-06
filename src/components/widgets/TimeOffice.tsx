@@ -58,7 +58,6 @@ const TimeOffice = () => {
   return (
     <Box flexDirection="column">
       <BigText text={office} font="tiny" colors={["yellow"]} />
-      <Text color="gray">({time.liturgyTimeRange})</Text>
       <Box>
         <Text bold color="white">Local:</Text>
         <Text bold color="cyan"> {localTime}</Text>
