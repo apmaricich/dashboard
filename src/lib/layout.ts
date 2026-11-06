@@ -86,13 +86,16 @@ export function gridLayoutStrategy(options?: LayoutOptions): LayoutStrategy {
       for (let row = 0; row < rows.length; row++) {
         const rowWidgets = rows[row];
         const cellWidth = Math.floor(containerWidth / rowWidgets.length);
+        const remainder = containerWidth - (cellWidth * rowWidgets.length);
 
         for (let col = 0; col < rowWidgets.length; col++) {
           const { index } = rowWidgets[col];
+          // Add remainder to last widget in row to fill full width
+          const width = col === rowWidgets.length - 1 ? cellWidth + remainder : cellWidth;
           layoutResults[index] = {
-            x: col * cellWidth,
+            x: col * cellWidth + (col === rowWidgets.length - 1 ? 0 : 0),
             y: row * cellHeight,
-            width: cellWidth,
+            width: width,
             height: cellHeight
           };
         }
