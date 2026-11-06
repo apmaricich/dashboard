@@ -1,5 +1,6 @@
 import React, { createContext, useContext, PropsWithChildren } from "react";
 import { Box, Text } from "ink";
+import { TitledBox } from "@mishieck/ink-titled-box";
 import { WidgetConfig } from "../config/loader.js";
 import { LayoutResult } from "../lib/layout.js";
 import { Theme } from "../themes/index.js";
@@ -91,25 +92,23 @@ const FoundationWidget = ({
 
   return (
     <WidgetContext.Provider value={contextValue}>
-      <Box
+      <TitledBox
         borderStyle={theme.borderStyle as never}
-        borderColor={theme.colors.border}
+        borderColor={theme.colors.primary}
+        titles={[config.name]}
         height={layout.height}
         width={layout.width}
         paddingX={1}
-        paddingY={1}
+        paddingY={0}
         flexDirection="column"
         {...(position ? { position } : {})}
         {...(left !== undefined ? { left } : {})}
         {...(top !== undefined ? { top } : {})}
       >
-        <Box>
-          <Text bold color={theme.colors.primary}>{`${config.name}\n`}</Text>
-        </Box>
         <WidgetErrorBoundary config={config}>
           <Box flexGrow={1}>{children}</Box>
         </WidgetErrorBoundary>
-      </Box>
+      </TitledBox>
     </WidgetContext.Provider>
   );
 };

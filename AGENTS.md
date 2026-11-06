@@ -130,8 +130,10 @@ npm run dev
 - **romcal:** Liturgical calendar computation
 - **systeminformation:** System metrics
 - **js-yaml:** YAML parsing
+- **@mishieck/ink-titled-box:** Titled borders for widget headers (installed via --legacy-peer-deps)
 
 ## Known Issues
 
 - Widget content may be truncated in narrow terminals
 - MLX-serve status requires the MLX-serve API to be running
+- @mishieck/ink-titled-box is installed with --legacy-peer-deps due to a peer dependency mismatch with ink@8

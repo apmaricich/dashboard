@@ -73,8 +73,8 @@ export function gridLayoutStrategy(options?: LayoutOptions): LayoutStrategy {
       }
 
       const numRows = Math.ceil(results.length / maxCols);
-      const cellHeight = containerHeight / numRows;
-      const cellWidth = containerWidth / maxCols;
+      const cellHeight = Math.floor(containerHeight / numRows);
+      const cellWidth = Math.floor(containerWidth / maxCols);
 
       return results.map(({ widget, index }) => {
         const row = Math.floor(index / maxCols);
