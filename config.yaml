@@ -3,6 +3,7 @@ layout:
   maxCols: 3
   theme: liturgical
   # theme: seasonal
+  # theme: vibrant
   header: "Veritas"
   footer: "APM"
 

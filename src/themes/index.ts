@@ -85,3 +85,6 @@ registerTheme('liturgical', liturgicalTheme);
 
 import { default as seasonalTheme } from './seasonal.js';
 registerTheme('seasonal', seasonalTheme);
+
+import { default as vibrantTheme } from './vibrant.js';
+registerTheme('vibrant', vibrantTheme);

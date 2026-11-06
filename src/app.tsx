@@ -80,13 +80,15 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
         <Box flexGrow={1} />
         <Text color="gray">[q]uit</Text>
       </Box>
-      <Layout
-        widgets={config.widgets}
-        layout={layout}
-        theme={theme}
-        columns={columns}
-        rows={rows}
-      />
+      <Box backgroundColor={theme.colors.background}>
+        <Layout
+          widgets={config.widgets}
+          layout={layout}
+          theme={theme}
+          columns={columns}
+          rows={rows}
+        />
+      </Box>
     </Box>
   );
 };
