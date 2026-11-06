@@ -109,44 +109,9 @@ const LiturgicalYearProgress = () => {
     bar.push({ char: "░", color: "gray" });
   }
 
-  // Calculate current position marker
-  const currentDay = Math.floor(yearData.progress * yearData.totalDays);
-  const markerIndex = Math.floor((currentDay / yearData.totalDays) * barWidth);
-  const weekNumber = Math.floor(currentDay / 7);
-
-  // Find season emoji markers and day numbers for the timeline
-  const markers = yearData.seasons.map((s, i) => {
-    const start = Math.floor((s.startDay - 1) / yearData.totalDays * barWidth);
-    return {
-      emoji: seasonSymbols[s.name] || "⚔️",
-      day: s.startDay,
-      index: start,
-    };
-  });
-
-  // Build emoji marker row (top row) - later seasons overwrite earlier at same position
-  const markerRow = new Array(barWidth).fill(" ");
-  for (const marker of markers) {
-    if (marker.index < barWidth) {
-      markerRow[marker.index] = marker.emoji;
-    }
-  }
-
-  // Build day number row (bottom row) - shows the FIRST season at each position
-  const dayRow = new Array(barWidth).fill(" ");
-  for (const marker of markers) {
-    if (marker.index < barWidth && marker.day <= 9) {
-      // Only set if this position is empty (first season at this position)
-      if (dayRow[marker.index] === " ") {
-        dayRow[marker.index] = `${marker.day}`;
-      }
-    }
-  }
 
 
 
-  // Debug: show day number row content
-  console.error(`Day row: ${JSON.stringify(dayRow)}`);
 
   // Progress bar split by season with | separators and colors
   const ProgressBar = () => {
@@ -184,9 +149,48 @@ const LiturgicalYearProgress = () => {
     );
   };
 
+  // Position indicator with week text - placement varies by half
+  const PositionIndicator = ({ indicatorLeft }: { indicatorLeft: boolean }) => {
+    const text = `Week ${weekNumber}`;
+    if (indicatorLeft) {
+      // Marker in right half: text to the left of marker
+      const textLen = text.length + 1; // +1 for space
+      const leftSpacers = markerIndex - textLen;
+      return (
+        <Box>
+          {Array.from({ length: leftSpacers }).map((_, i) => (
+            <Text key={`left-${i}`} color="gray"> </Text>
+          ))}
+          <Text color="gray">{text} </Text>
+          <Text color="yellow">▲</Text>
+          {Array.from({ length: barWidth - 2 - leftSpacers - textLen - 1 }).map((_, i) => (
+            <Text key={`right-${i}`} color="gray"> </Text>
+          ))}
+        </Box>
+      );
+    } else {
+      // Marker in left half: text to the right of marker
+      return (
+        <Box>
+          {Array.from({ length: markerIndex }).map((_, i) => (
+            <Text key={`spacer-${i}`} color="gray"> </Text>
+          ))}
+          <Text color="yellow">▲</Text>
+          <Text color="gray"> {text}</Text>
+        </Box>
+      );
+    }
+  };
+
+  // Calculate current position marker
+  const currentDay = Math.floor(yearData.progress * yearData.totalDays);
+  const markerIndex = Math.floor((currentDay / yearData.totalDays) * (barWidth - 2));
+  const weekNumber = Math.floor(currentDay / 7);
+
   return (
     <Box flexDirection="column">
       <ProgressBar />
+      <PositionIndicator indicatorLeft={markerIndex >= barWidth / 2} />
     </Box>
   );
 };
