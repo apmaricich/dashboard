@@ -44,7 +44,7 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
       const layoutResults = strategy.compute(
         config.widgets,
         columns,
-        rows - 1, // Reserve 1 row for header
+        rows - 1, // Reserve row for header and footer
         {
           maxCols: config.layout.maxCols,
         }

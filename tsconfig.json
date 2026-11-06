@@ -5,6 +5,8 @@
     "moduleResolution": "Bundler",
     "jsx": "react",
     "outDir": "dist",
+    "rootDir": "./src",
+    "types": ["node"],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
