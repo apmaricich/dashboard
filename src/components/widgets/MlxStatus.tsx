@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { Box, Text } from "ink";
-import { getMlxStatus, MlxStatus as MlxStatusData } from "../../lib/mlx-status.js";
+import { getMlxStatus, getMlxMetrics } from "../../lib/mlx-status.js";
+import { computeUsageDelta, formatUsageTime } from "../../lib/mlx-usage.js";
 import useRefresh from "../../hooks/useRefresh.js";
 import { useWidgetContext } from "../FoundationWidget.js";
 
@@ -27,6 +28,12 @@ const MlxStatus = () => {
 
   const dataFn = useCallback(async () => getMlxStatus(), []);
   const { data: status, isLoading, error } = useRefresh(30, dataFn);
+
+  const metricsFn = useCallback(async () => {
+    const metrics = await getMlxMetrics();
+    return computeUsageDelta(metrics);
+  }, []);
+  const { data: usage } = useRefresh(120, metricsFn);
 
   if (isLoading) {
     return (
@@ -121,8 +128,27 @@ const MlxStatus = () => {
     );
   }
 
+  let usageLines: React.ReactNode[] = [];
+  if (usage) {
+    usageLines = [
+      <Box key="usage">
+        <Text bold color={theme.colors.primary}>Today's Usage:</Text>
+      </Box>,
+      <Box key="gpu">
+        <Text color={theme.colors.text}>  GPU Compute: {formatUsageTime(usage.gpuComputeSeconds)}</Text>
+      </Box>,
+      <Box key="requests">
+        <Text color={theme.colors.text}>  Requests: {usage.requests}</Text>
+      </Box>,
+      <Box key="tokens">
+        <Text color={theme.colors.text}>  Tokens: {usage.promptTokens.toLocaleString()} in / {usage.generationTokens.toLocaleString()} out</Text>
+      </Box>,
+    ];
+  }
+
   return (
     <Box flexDirection="column">
+      {usageLines}
       {displayLines}
     </Box>
   );

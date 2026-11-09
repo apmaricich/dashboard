@@ -13,6 +13,26 @@ export interface MlxStatus {
   capabilities: string[];
 }
 
+export interface MlxMetrics {
+  counters: {
+    promptTokensTotal: number;
+    generationTokensTotal: number;
+    prefillTokensTotal: number;
+    requestsSuccessTotal: number;
+    requestsCancelledTotal: number;
+    requestsFailedTotal: number;
+  };
+  histogramSums: {
+    decodeTimeSeconds: number;
+    prefillTimeSeconds: number;
+    timeToFirstTokenSeconds: number;
+    e2eRequestLatencySeconds: number;
+    promptTokens: number;
+    outputTokens: number;
+  };
+  processStartTimeSeconds: number;
+}
+
 interface MlxModelMeta {
   architecture?: string;
   num_layers?: number;
@@ -64,6 +84,50 @@ async function fetchMlxModels(timeoutMs = 5000): Promise<MlxModelInfo[]> {
  * Get MLX-serve status.
  * Returns a status object even when the API is unreachable.
  */
+export async function getMlxMetrics(timeoutMs = 5000): Promise<MlxMetrics> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetch(`${MLX_ENDPOINT}/metrics.json`, {
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      throw new Error(`MLX metrics API returned ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return {
+      counters: {
+        promptTokensTotal: data.counters?.prompt_tokens_total ?? 0,
+        generationTokensTotal: data.counters?.generation_tokens_total ?? 0,
+        prefillTokensTotal: data.counters?.prefill_tokens_total ?? 0,
+        requestsSuccessTotal: data.counters?.requests_success_total ?? 0,
+        requestsCancelledTotal: data.counters?.requests_cancelled_total ?? 0,
+        requestsFailedTotal: data.counters?.requests_failed_total ?? 0,
+      },
+      histogramSums: {
+        decodeTimeSeconds: data.histograms?.decode_time_seconds?.sum ?? 0,
+        prefillTimeSeconds: data.histograms?.prefill_time_seconds?.sum ?? 0,
+        timeToFirstTokenSeconds: data.histograms?.time_to_first_token_seconds?.sum ?? 0,
+        e2eRequestLatencySeconds: data.histograms?.e2e_request_latency_seconds?.sum ?? 0,
+        promptTokens: data.histograms?.prompt_tokens?.sum ?? 0,
+        outputTokens: data.histograms?.output_tokens?.sum ?? 0,
+      },
+      processStartTimeSeconds: data.gauges?.process_start_time_seconds ?? 0,
+    };
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error(`MLX metrics request timed out after ${timeoutMs}ms`);
+    }
+    throw new Error(`Failed to fetch MLX metrics: ${error}`);
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 export async function getMlxStatus(): Promise<MlxStatus> {
   try {
     const models = await fetchMlxModels();
