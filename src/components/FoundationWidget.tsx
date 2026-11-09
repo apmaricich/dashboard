@@ -106,7 +106,14 @@ const FoundationWidget = ({
         {...(top !== undefined ? { top } : {})}
       >
         <WidgetErrorBoundary config={config}>
-          <Box flexGrow={1}>{children}</Box>
+          <Box
+            flexGrow={1}
+            {...(config.center
+              ? { justifyContent: "center", alignItems: "center" }
+              : {})}
+          >
+            {children}
+          </Box>
         </WidgetErrorBoundary>
       </TitledBox>
     </WidgetContext.Provider>

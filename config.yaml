@@ -1,7 +1,7 @@
 layout:
-  strategy: grid
-  maxCols: 3
-  # strategy: focus
+  # strategy: grid
+  # maxCols: 3
+  strategy: focus
   theme: liturgical
   # theme: seasonal
   # theme: vibrant
@@ -13,6 +13,7 @@ widgets:
     type: clock
     order: 1
     refresh: 1
+    center: true
   - name: "Office of the Hours"
     type: office
     order: 3
@@ -27,6 +28,7 @@ widgets:
     type: system
     order: 4
     refresh: 5
+    center: true
   - name: "MLX Status"
     type: mlx
     order: 5
@@ -37,6 +39,7 @@ widgets:
     type: weather
     order: 6
     refresh: 600
+    center: true
     params:
       latitude: 38.9443
       longitude: -76.831
@@ -45,6 +48,7 @@ widgets:
     type: workday
     order: 7
     refresh: 60
+    center: true
     params:
       startHour: 8
       endHour: 16

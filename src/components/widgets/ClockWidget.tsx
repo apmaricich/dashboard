@@ -41,18 +41,11 @@ const ClockWidget = () => {
     font = "block";
   }
 
-  // Render large ASCII art text with ink-big-text, centered
+  // Render large ASCII art text with ink-big-text
+  // Centering is handled by FoundationWidget when center config is set
   return (
-    <Box
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      height={layout.height}
-      width={layout.width}
-    >
-      <Box alignItems="center">
-        <BigText text={timeString} font={font} colors={[theme.colors.accent]} />
-      </Box>
+    <Box flexDirection="column">
+      <BigText text={timeString} font={font} colors={[theme.colors.accent]} />
     </Box>
   );
 };

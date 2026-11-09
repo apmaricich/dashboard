@@ -43,6 +43,8 @@ export interface WidgetConfig {
   refresh: number;
   /** Optional type-specific parameters (queries, thresholds, etc.) */
   params?: Record<string, unknown>;
+  /** When true, center the widget content within its box */
+  center?: boolean;
 }
 
 /**

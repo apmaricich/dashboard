@@ -1,7 +1,7 @@
 import React from "react";
 import { render, Box, useWindowSize, Text } from "ink";
 import FoundationWidget from "./components/FoundationWidget.js";
-import Office from "./components/widgets/Office.js";
+import WorkDay from "./components/widgets/WorkDay.js";
 import { getTheme } from "./themes/index.js";
 import { WidgetConfig } from "./config/loader.js";
 import { getLayoutStrategy } from "./lib/layout.js";
@@ -12,8 +12,8 @@ function TestApp() {
   const { columns, rows } = useWindowSize();
 
   const config: WidgetConfig = {
-    name: "Office of the Hours",
-    type: "office",
+    name: "Work Progress",
+    type: "workday",
     order: 1,
     refresh: 60,
   };
@@ -29,7 +29,7 @@ function TestApp() {
   return (
     <Box flexDirection="column">
       <Box width="100%" borderStyle="single" borderColor={theme.colors.border}>
-        <Text bold color={theme.colors.primary}> Office of the Hours</Text>
+        <Text bold color={theme.colors.primary}> Work Progress</Text>
       </Box>
       <Box width={columns} height={widgetAreaHeight} position="relative">
         <FoundationWidget
@@ -41,7 +41,7 @@ function TestApp() {
           left={layouts[0].x}
           top={layouts[0].y}
         >
-          <Office />
+          <WorkDay />
         </FoundationWidget>
       </Box>
       <Box width="100%" borderStyle="single" borderColor={theme.colors.border}>

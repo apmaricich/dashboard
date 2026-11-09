@@ -91,7 +91,7 @@ const WorkDay = () => {
   }
 
   return (
-    <Box flexDirection="column">
+    <Box flexDirection="column" justifyContent="flex-start">
       <Box>
         <Text bold color={theme.colors.primary}>{progress.status}</Text>
       </Box>
