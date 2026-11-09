@@ -134,5 +134,83 @@ export function getLayoutStrategy(name: string): LayoutStrategy {
   return strategy;
 }
 
-// Register the grid layout strategy at module load time
+/**
+ * Create a focus layout that places one central widget with edge slots.
+ * Center takes 50% of screen. Remaining widgets fill edge slots in order:
+ * left, top, right, bottom, then split edges.
+ */
+export function focusLayoutStrategy(): LayoutStrategy {
+  return {
+    compute(
+      widgets: WidgetConfig[],
+      containerWidth: number,
+      containerHeight: number,
+      layoutOptions?: LayoutOptions
+    ): LayoutResult[] {
+      const results = widgets.map((widget, index) => ({
+        widget,
+        index
+      }));
+
+      results.sort((a, b) => a.widget.order - b.widget.order);
+
+      if (results.length === 0) {
+        return [];
+      }
+
+      const w = containerWidth;
+      const h = containerHeight;
+
+      // Define slots: [x, y, width, height] as fractions of container
+      // Slot 0 = center, then edge slots in fill order
+      const slotWidth = w / 4;
+      const slotHeight = h / 4;
+
+      // Build slot list dynamically based on widget count
+      const slots = [
+        // Center (50% x 50%)
+        [slotWidth, slotHeight, slotWidth * 2, slotHeight * 2],
+      ];
+
+      if (results.length <= 5) {
+        // Phase 1: 4 edge slots
+        slots.push(
+          [0, 0, slotWidth, h - 1],                      // left
+          [slotWidth, 0, slotWidth * 2, slotHeight],      // top
+          [slotWidth * 3, 0, slotWidth, h - 1],           // right
+          [slotWidth, slotHeight * 3, slotWidth * 2, slotHeight]  // bottom
+        );
+      } else {
+        // Phase 2: Split edges in half
+        slots.push(
+          [0, 0, slotWidth, slotHeight],                  // left-top
+          [slotWidth, 0, slotWidth, slotHeight],          // top-left
+          [slotWidth * 2, 0, slotWidth, slotHeight],      // top-right
+          [slotWidth * 3, 0, slotWidth, slotHeight],      // right-top
+          [0, slotHeight, slotWidth, slotHeight],         // left-bottom
+          [slotWidth * 3, slotHeight, slotWidth, slotHeight],  // right-bottom
+          [slotWidth, slotHeight * 3, slotWidth, slotHeight],   // bottom-left
+          [slotWidth * 2, slotHeight * 3, slotWidth, slotHeight]  // bottom-right
+        );
+      }
+
+      const layoutResults: LayoutResult[] = [];
+      for (let i = 0; i < results.length; i++) {
+        const { index } = results[i];
+        const slot = slots[i];
+        layoutResults[index] = {
+          x: Math.floor(slot[0]),
+          y: Math.floor(slot[1]),
+          width: Math.floor(slot[2]),
+          height: Math.floor(slot[3])
+        };
+      }
+
+      return layoutResults;
+    }
+  };
+}
+
+// Register layout strategies
 registerLayoutStrategy('grid', gridLayoutStrategy());
+registerLayoutStrategy('focus', focusLayoutStrategy());
