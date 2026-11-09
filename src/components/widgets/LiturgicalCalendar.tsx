@@ -67,7 +67,7 @@ const LiturgicalCalendar = ({ config }: { config?: WidgetConfig }) => {
     gold: "yellow",
   };
 
-  const terminalColor = colorMap[liturgical.color] || "green";
+  const terminalColor = colorMap[liturgical.color.toLowerCase()] || "green";
 
   // Determine if we have enough width for large text
   // "tiny" font is approximately 2 chars wide per character

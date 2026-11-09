@@ -1,7 +1,7 @@
 layout:
-  # strategy: grid
-  # maxCols: 3
-  strategy: focus
+  strategy: grid
+  maxCols: 3
+  # strategy: focus
   theme: liturgical
   # theme: seasonal
   # theme: vibrant
@@ -33,6 +33,7 @@ widgets:
     type: mlx
     order: 5
     refresh: 30
+    center: true
     params:
       endpoint: "http://localhost:8080"
   - name: "Weather (Bowie, MD)"

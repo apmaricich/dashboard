@@ -1,4 +1,4 @@
-import { queryFor, calendarFor } from 'romcal';
+import { calendarFor } from 'romcal';
 
 export interface LiturgicalInfo {
   date: Date;
@@ -27,10 +27,11 @@ export interface LiturgicalYearData {
 }
 
 function normalizeRank(type: string): LiturgicalInfo['rank'] {
-  if (type.includes('Solemnity')) return 'Solemnity';
-  if (type.includes('Feast')) return 'Feast';
-  if (type.includes('Memorial')) return 'Memorial';
-  if (type.includes('Commemoration')) return 'Commemoration';
+  const t = type.toUpperCase();
+  if (t.includes('SOLEMNITY')) return 'Solemnity';
+  if (t.includes('FEAST')) return 'Feast';
+  if (t.includes('MEMORIAL')) return 'Memorial';
+  if (t.includes('COMMEMORATION')) return 'Commemoration';
   return 'Weekday';
 }
 
@@ -51,8 +52,24 @@ export function getLiturgicalInfo(date?: Date): LiturgicalInfo {
   const month = d.getMonth() + 1;
   const day = d.getDate();
 
+  // Build ISO date string for comparison (romcal uses UTC dates)
+  const targetDateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
   try {
-    const romcalDay = queryFor(year, month, day);
+    const calendar = calendarFor(year) as any[];
+
+    let romcalDay = null;
+    for (const dayEntry of calendar) {
+      // Compare date strings (romcal uses YYYY-MM-DDTHH:MM:SS.000Z format)
+      if (dayEntry.moment.startsWith(targetDateStr)) {
+        romcalDay = dayEntry;
+        break;
+      }
+    }
+
+    if (!romcalDay) {
+      throw new Error('Date not found in calendar');
+    }
 
     return {
       date: d,
