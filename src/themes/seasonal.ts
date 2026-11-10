@@ -11,9 +11,9 @@ import { ThemeFunction, ThemeContext, Theme } from './index.js';
  */
 
 function getSeason(month: number): 'winter' | 'spring' | 'summer' | 'autumn' {
-  if (month >= 12 || month <= 2) return 'winter';
-  if (month >= 3 && month <= 5) return 'spring';
-  if (month >= 6 && month <= 8) return 'summer';
+  if (month >= 11 || month <= 1) return 'winter';
+  if (month >= 2 && month <= 4) return 'spring';
+  if (month >= 5 && month <= 7) return 'summer';
   return 'autumn';
 }
 
