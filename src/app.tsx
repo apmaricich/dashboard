@@ -94,7 +94,7 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
       <Box height={1}>
         <Text bold color="cyan">{config.layout.header}</Text>
         <Box flexGrow={1} />
-        <Text color="gray">[q]uit [c]allup [esc]close</Text>
+        <Text color="gray">[c]allup [q]uit</Text>
       </Box>
       {callupOpen ? (
         <CallupOverlay
