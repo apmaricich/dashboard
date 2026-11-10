@@ -13,6 +13,8 @@ import { loadConfig, DashboardConfig } from "./config/loader.js";
 import { getTheme, Theme } from "./themes/index.js";
 import { getLayoutStrategy, LayoutResult } from "./lib/layout.js";
 import Layout from "./components/Layout.js";
+import CallupOverlay from "./components/CallupOverlay.js";
+import { useCallup } from "./hooks/useCallup.js";
 
 // Read version from package.json (from project root)
 const pkg = JSON.parse(readFileSync("package.json", "utf-8"));
@@ -30,6 +32,8 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
   );
   const [layout, setLayout] = React.useState<LayoutResult[]>([]);
   const [configLoaded, setConfigLoaded] = React.useState(false);
+
+  const callup = useCallup();
 
   React.useEffect(() => {
     setConfigLoaded(true);
@@ -55,17 +59,13 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
     computeLayout();
   }, [app, config, configLoaded, columns, rows]);
 
-  // Handle keyboard shortcuts for profile switching (future)
-  // Only use useInput when stdin supports raw mode
+  // Handle keyboard shortcuts
   if (isRawModeSupported) {
-    useInput((input) => {
-      switch (input) {
-        case "q":
-          app.exit();
-          break;
-        // Future: profile switching
-        // case "1": switchProfile(1); break;
-        // case "2": switchProfile(2); break;
+    useInput((input, key) => {
+      if (input === "q") {
+        app.exit();
+      } else {
+        callup.handleInput(input, key);
       }
     });
   }
@@ -78,22 +78,45 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
     );
   }
 
+  // Callup data from hook
+  const {
+    open: callupOpen,
+    query: callupQuery,
+    selected: callupSelected,
+    activeWidget,
+    select: callupSelect,
+    displayResults: filteredResults,
+    activeWidgetComponent,
+  } = callup;
+
   return (
     <Box flexDirection="column" height={rows}>
       <Box height={1}>
         <Text bold color="cyan">{config.layout.header}</Text>
         <Box flexGrow={1} />
-        <Text color="gray">[q]uit</Text>
+        <Text color="gray">[q]uit [c]allup [esc]close</Text>
       </Box>
-      <Box backgroundColor={theme.colors.background}>
-        <Layout
-          widgets={config.widgets}
-          layout={layout}
-          theme={theme}
-          columns={columns}
-          rows={rows}
+      {callupOpen ? (
+        <CallupOverlay
+          query={callupQuery}
+          results={filteredResults}
+          selected={callupSelected}
+          activeWidgetType={activeWidget}
+          activeWidgetComponent={activeWidgetComponent}
+          onQueryChange={() => {}}
+          onSelect={callupSelect}
         />
-      </Box>
+      ) : (
+        <Box backgroundColor={theme.colors.background} flexGrow={1}>
+          <Layout
+            widgets={config.widgets}
+            layout={layout}
+            theme={theme}
+            columns={columns}
+            rows={rows}
+          />
+        </Box>
+      )}
       <Box height={1}>
         <Text bold color="cyan">{config.layout.footer}</Text>
         <Box flexGrow={1} />

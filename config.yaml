@@ -26,19 +26,19 @@ widgets:
       showProgress: true
   - name: "System Metrics"
     type: system
-    order: 4
+    order: 6
     refresh: 5
     center: true
   - name: "MLX Status"
     type: mlx
-    order: 5
+    order: 7
     refresh: 30
     center: true
     params:
       endpoint: "http://localhost:8080"
   - name: "Weather (Bowie, MD)"
     type: weather
-    order: 6
+    order: 5
     refresh: 600
     center: true
     params:
@@ -47,7 +47,7 @@ widgets:
       temperatureUnit: fahrenheit
   - name: "Work Progress"
     type: workday
-    order: 7
+    order: 4
     refresh: 60
     center: true
     params:
