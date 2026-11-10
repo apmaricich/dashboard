@@ -72,14 +72,14 @@ const LiturgicalCalendar = ({ config }: { config?: WidgetConfig }) => {
   // Determine if we have enough width for large text
   // "tiny" font is approximately 2 chars wide per character
   // Date string is typically 15-20 chars, so we need at least 30 chars wide
-  const useLargeText = layout.width >= 60;
+  const useLargeText = layout.width >= 65;
 
   return (
     <Box flexDirection="column">
       {useLargeText ? (
         <BigText text={dateStr} font="tiny" colors={[terminalColor]} />
       ) : (
-        <Text bold color={terminalColor}>{dateStr}</Text>
+        <Text bold color={terminalColor}>{dateStr}{"\n"}</Text>
       )}
       <Box>
         <Text bold color={theme.colors.primary}>Season:</Text>
