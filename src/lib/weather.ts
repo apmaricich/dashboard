@@ -6,6 +6,7 @@ export interface WeatherData {
   weatherEmoji: string;
   weatherDescription: string;
   windSpeed: number;
+  precipitation: number;
 }
 
 const WMO_CODE_DESCRIPTIONS: Record<number, string> = {
@@ -42,10 +43,11 @@ const WMO_CODE_DESCRIPTIONS: Record<number, string> = {
 export async function getCurrentWeather(
   latitude: number,
   longitude: number,
-  temperatureUnit: 'celsius' | 'fahrenheit' = 'celsius'
+  temperatureUnit: 'celsius' | 'fahrenheit' = 'celsius',
+  windSpeedUnit: 'km/h' | 'mph' = 'mph'
 ): Promise<WeatherData> {
   const unitParam = temperatureUnit === 'fahrenheit' ? 'fahrenheit' : 'celsius';
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&temperature_unit=${unitParam}`;
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,wind_speed_10m,precipitation&temperature_unit=${unitParam}&wind_speed_unit=${windSpeedUnit}`;
 
   const response = await fetch(url);
   if (!response.ok) {
@@ -53,21 +55,22 @@ export async function getCurrentWeather(
   }
 
   const data = await response.json();
-  const current = data.current_weather;
+  const current = data.current;
 
   if (!current) {
     throw new Error('No current weather data in response');
   }
 
-  const weatherCode = Number(current.weathercode);
+  const weatherCode = Number(current.weather_code);
   const emojiData = openWeatherWMOToEmoji(weatherCode);
 
   return {
-    temperature: current.temperature,
+    temperature: current.temperature_2m,
     weatherCode: weatherCode,
     weatherEmoji: emojiData.value,
     weatherDescription: emojiData.description,
-    windSpeed: Number(current.windspeed),
+    windSpeed: Number(current.wind_speed_10m),
+    precipitation: Number(current.precipitation),
   };
 }
 

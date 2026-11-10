@@ -16,10 +16,10 @@ const Weather = () => {
   const params = (config.params as WeatherParams) || {};
   const latitude = params.latitude ?? 40.7128; // Default: New York
   const longitude = params.longitude ?? -74.006; // Default: New York
-  const temperatureUnit = params.temperatureUnit ?? "celsius";
+  const temperatureUnit = params.temperatureUnit ?? "fahrenheit";
 
   const dataFn = useCallback(async () => {
-    return getCurrentWeather(latitude, longitude, temperatureUnit);
+    return getCurrentWeather(latitude, longitude, temperatureUnit, "mph");
   }, [latitude, longitude, temperatureUnit]);
 
   const { data: weather, isLoading, error } = useRefresh(600, dataFn);
@@ -59,8 +59,13 @@ const Weather = () => {
       </Box>
       <Text color={theme.colors.text}>{weather.weatherDescription}</Text>
       <Box>
-        <Text color={theme.colors.text}>💨 {weather.windSpeed} km/h</Text>
+        <Text color={theme.colors.text}>💨 {weather.windSpeed} mph</Text>
       </Box>
+      {weather.precipitation > 0 && (
+        <Box>
+          <Text color={theme.colors.text}>💧 {weather.precipitation} mm</Text>
+        </Box>
+      )}
     </Box>
   );
 };

@@ -62,10 +62,10 @@ describe("useCallup - keyboard navigation", () => {
 
     expect(result.current.activeWidget).toBeNull();
 
-    // Select first widget
+    // Select first widget (Clock - alphabetically first)
     act(() => result.current.handleInput("", { return: true }));
     expect(result.current.activeWidget).not.toBeNull();
-    expect(result.current.activeWidget).toBe(result.current.displayResults[0].id);
+    expect(result.current.activeWidget).toBe("time");
   });
 
   it("returns to list from widget view on escape", () => {
@@ -141,12 +141,32 @@ describe("useCallup - keyboard navigation", () => {
     const { result } = renderHook(() => useCallup());
     act(() => result.current.handleInput("c", {}));
 
-    // Navigate to second item
+    // Navigate to second item (Debug)
     act(() => result.current.handleInput("", { downArrow: true }));
     expect(result.current.selected).toBe(1);
 
     // Press return
     act(() => result.current.handleInput("", { return: true }));
-    expect(result.current.activeWidget).toBe(result.current.displayResults[1].id);
+    expect(result.current.activeWidget).toBe("debug");
+  });
+
+  it("displays widgets in alphabetical order", () => {
+    const { result } = renderHook(() => useCallup());
+    act(() => result.current.handleInput("c", {}));
+
+    // Extract names from display results
+    const names = result.current.displayResults.map((r) => r.name);
+
+    // Verify all widgets are present
+    expect(names.length).toBe(9);
+
+    // Verify alphabetical order
+    for (let i = 1; i < names.length; i++) {
+      expect(names[i - 1].localeCompare(names[i])).toBeLessThanOrEqual(0);
+    }
+
+    // Spot-check first and last
+    expect(names[0]).toBe("Clock");
+    expect(names[names.length - 1]).toBe("Work Day");
   });
 });

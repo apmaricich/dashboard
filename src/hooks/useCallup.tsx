@@ -76,7 +76,9 @@ export function useCallup() {
       }
 
       if (isOpen) {
-        const widgetTypes = getAllWidgetTypes();
+        const widgetTypes = getAllWidgetTypes().sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
         const filtered = fuzzyFilter(
           q,
           widgetTypes,
@@ -112,7 +114,9 @@ export function useCallup() {
   );
 
   // Compute filtered results for display
-  const widgetTypes = getAllWidgetTypes();
+  const widgetTypes = getAllWidgetTypes().sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
   const filteredResults = fuzzyFilter(
     query,
     widgetTypes,
