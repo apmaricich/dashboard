@@ -94,7 +94,7 @@ const FoundationWidget = ({
     <WidgetContext.Provider value={contextValue}>
       <TitledBox
         borderStyle={theme.borderStyle as never}
-        borderColor={theme.colors.primary}
+        borderColor={theme.colors.border}
         titles={[config.name]}
         height={layout.height}
         width={layout.width}

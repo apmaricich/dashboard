@@ -21,20 +21,15 @@ describe("liturgical theme", () => {
     expect(theme.id).toBe("liturgical");
   });
 
-  test("defaults to green when no day object is found", () => {
+  test("defaults to green sub-theme when no day object is found", () => {
     const theme = liturgicalTheme({ date: new Date(2024, 6, 15) });
-    expect(theme.colors.primary).toBe("green");
-    expect(theme.colors.border).toBe("green");
-    expect(theme.colors.accent).toBe("green");
+    expect(theme.colors.primary).toBe("#80c080");
+    expect(theme.colors.border).toBe("#80c080");
+    expect(theme.colors.background).toBe("#0a150a");
+    expect(theme.colors.accent).toBe("#90d090");
   });
 
-  test("has correct background and text colors", () => {
-    const theme = liturgicalTheme({ date: new Date(2024, 6, 15) });
-    expect(theme.colors.text).toBe("#ffffff");
-    expect(theme.colors.background).toBe("#111111");
-  });
-
-  test("has single border style", () => {
+  test("green sub-theme has single border style", () => {
     const theme = liturgicalTheme({ date: new Date(2024, 6, 15) });
     expect(theme.borderStyle).toBe("single");
   });

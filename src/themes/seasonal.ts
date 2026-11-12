@@ -17,59 +17,56 @@ function getSeason(month: number): 'winter' | 'spring' | 'summer' | 'autumn' {
   return 'autumn';
 }
 
+const SEASONAL_THEMES: Record<string, Theme> = {
+  winter: {
+    id: 'seasonal-winter',
+    colors: {
+      primary: '#ffffff',
+      border: '#50e5ff',
+      text: '#aaaaaa',
+      background: '#000000',
+      accent: '#50e5ff',
+    },
+    borderStyle: 'dashed',
+  },
+  spring: {
+    id: 'seasonal-spring',
+    colors: {
+      primary: '#50ff50',
+      border: '#50ff50',
+      text: '#aaaaaa',
+      background: '#000000',
+      accent: '#ffff50',
+    },
+    borderStyle: 'single',
+  },
+  summer: {
+    id: 'seasonal-summer',
+    colors: {
+      primary: '#ffff50',
+      border: '#ffff50',
+      text: '#aaaaaa',
+      background: '#000000',
+      accent: '#ff4444',
+    },
+    borderStyle: 'single',
+  },
+  autumn: {
+    id: 'seasonal-autumn',
+    colors: {
+      primary: '#ffff50',
+      border: '#ffa500',
+      text: '#aaaaaa',
+      background: '#000000',
+      accent: '#ff4444',
+    },
+    borderStyle: 'single',
+  },
+};
+
 const seasonalTheme: ThemeFunction = (context: ThemeContext): Theme => {
   const season = getSeason(context.date.getMonth());
-
-  switch (season) {
-    case 'winter':
-      return {
-        id: 'seasonal-winter',
-        colors: {
-          primary: 'white',
-          border: 'brightBlue',
-          text: 'gray',
-          background: 'black',
-          accent: 'cyan',
-        },
-        borderStyle: 'single',
-      };
-    case 'spring':
-      return {
-        id: 'seasonal-spring',
-        colors: {
-          primary: 'brightGreen',
-          border: 'green',
-          text: 'gray',
-          background: 'black',
-          accent: 'yellow',
-        },
-        borderStyle: 'single',
-      };
-    case 'summer':
-      return {
-        id: 'seasonal-summer',
-        colors: {
-          primary: 'yellow',
-          border: 'brightYellow',
-          text: 'gray',
-          background: 'black',
-          accent: 'brightRed',
-        },
-        borderStyle: 'single',
-      };
-    case 'autumn':
-      return {
-        id: 'seasonal-autumn',
-        colors: {
-          primary: 'brightYellow',
-          border: 'yellow',
-          text: 'gray',
-          background: 'black',
-          accent: 'red',
-        },
-        borderStyle: 'single',
-      };
-  }
+  return SEASONAL_THEMES[season];
 };
 
 export default seasonalTheme;

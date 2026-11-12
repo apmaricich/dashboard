@@ -2,21 +2,72 @@ import { calendarFor } from 'romcal';
 import type { Theme, ThemeContext } from './index.js';
 
 /**
- * Liturgical color mappings (terminal-compatible hex colors)
- * Red: Pentecost, feasts of martyrs
- * Rose: Gaudete Sunday, Laetare Sunday
- * Purple: Advent, Lent
- * Green: Ordinary Time
- * White: Easter, Christmas, major feasts
- * Gold: Special solemnities
+ * Liturgical color sub-themes.
+ * Each sub-theme specifies the complete colors object and border style
+ * for that liturgical color, replacing the entire values in the final
+ * theme output.
  */
-const COLOR_MAP: Record<string, string> = {
-    RED: 'red',
-    ROSE: 'pink',
-    PURPLE: 'magenta',
-    GREEN: 'green',
-    WHITE: 'white',
-    GOLD: 'yellow',
+const LITURGICAL_THEMES: Record<string, { colors: { primary: string; border: string; text: string; background: string; accent: string }; borderStyle: string }> = {
+    RED: {
+        colors: {
+            primary: '#e05555',
+            border: '#e05555',
+            text: '#ffffff',
+            background: '#1a0000',
+            accent: '#ff6666',
+        },
+        borderStyle: 'double',
+    },
+    ROSE: {
+        colors: {
+            primary: '#f0a0b0',
+            border: '#f0a0b0',
+            text: '#ffffff',
+            background: '#1a0a10',
+            accent: '#f5c0d0',
+        },
+        borderStyle: 'single',
+    },
+    PURPLE: {
+        colors: {
+            primary: '#c080d0',
+            border: '#c080d0',
+            text: '#ffffff',
+            background: '#100a1a',
+            accent: '#d090e0',
+        },
+        borderStyle: 'round',
+    },
+    GREEN: {
+        colors: {
+            primary: '#80c080',
+            border: '#80c080',
+            text: '#ffffff',
+            background: '#0a150a',
+            accent: '#90d090',
+        },
+        borderStyle: 'single',
+    },
+    WHITE: {
+        colors: {
+            primary: '#e0e0e0',
+            border: '#e0e0e0',
+            text: '#111111',
+            background: '#1a1a1a',
+            accent: '#ffffff',
+        },
+        borderStyle: 'single',
+    },
+    GOLD: {
+        colors: {
+            primary: '#e0c040',
+            border: '#e0c040',
+            text: '#111111',
+            background: '#1a1808',
+            accent: '#f0d050',
+        },
+        borderStyle: 'double',
+    },
 };
 
 /**
@@ -328,15 +379,13 @@ export default function liturgicalTheme(context: ThemeContext): Theme {
 
     try {
         // Get the calendar for this year
-        const calendar = calendarFor();
+        const calendar = calendarFor(year);
 
-        // Find today's day object in the calendar
-        const dayObj = calendar.find((d: { moment: string }) => {
-            const dDate = new Date(d.moment);
-            return dDate.getFullYear() === year &&
-                   dDate.getMonth() === month &&
-                   dDate.getDate() === day;
-        });
+        // Find today's day object in the calendar using string comparison
+        // Romcal uses UTC dates, so new Date(d.moment) will shift to local time.
+        // String matching on the YYYY-MM-DD prefix avoids this timezone issue.
+        const targetDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const dayObj = calendar.find((d: { moment: string }) => d.moment.startsWith(targetDateStr));
 
         if (dayObj) {
             // Romcal provides liturgicalColor directly in data.meta
@@ -346,17 +395,11 @@ export default function liturgicalTheme(context: ThemeContext): Theme {
         console.warn('liturgicalTheme: could not determine liturgical color, defaulting to green');
     }
 
-    const hex = COLOR_MAP[liturgicalColor] || COLOR_MAP.GREEN;
+    const subTheme = LITURGICAL_THEMES[liturgicalColor] || LITURGICAL_THEMES.GREEN;
 
     return {
         id: 'liturgical',
-        colors: {
-            primary: hex,
-            border: hex,
-            text: '#ffffff',
-            background: '#111111',
-            accent: hex,
-        },
-        borderStyle: 'single',
+        colors: subTheme.colors,
+        borderStyle: subTheme.borderStyle,
     };
 }
