@@ -58,8 +58,8 @@ class WidgetErrorBoundary extends React.Component<
     this.state = { hasError: false, error: null };
   }
 
-  static getDerivedStateFromError(error: Error, prevProps: { config: { name: string } }) {
-    console.error(`Widget "${prevProps.config.name}" error:`, error);
+  static getDerivedStateFromError(error: Error, prevState: { hasError: boolean; error: string | null }) {
+    console.error(`Widget error:`, error);
     return { hasError: true, error: error.message };
   }
 

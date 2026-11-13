@@ -78,7 +78,29 @@ widgets:
     type: system
     order: 4
     refresh: 5
+  - name: "Image Widget"
+    type: image
+    order: 5
+    params:
+      path: ./assets/logo.png
+      width: 40
+      preserveAspectRatio: true
+    refresh: 0
 ```
+
+### Image Widget Configuration
+
+The `image` widget renders an image using the `terminal-image` package. Available params:
+
+- `path` (string, required): File path to the image (supports PNG, JPG, GIF, BMP, TIFF, etc.)
+- `width` (number): Target width in character cells. If not set, image renders at its intrinsic width.
+- `height` (number): Target height in character cells.
+- `preserveAspectRatio` (boolean): Maintain the image's original aspect ratio when scaling (default: false).
+- `preferNativeRender` (boolean): Use the terminal's native image rendering protocol if supported (Kitty, iTerm2); falls back to Unicode art otherwise. Set to false for consistent appearance across terminals.
+
+Note: `refresh: 0` is recommended for static images. Use periodic refresh (e.g., `refresh: 2`) to animate GIFs. Layout dimensions are specified in character cells, not pixels.
+
+Dependencies used by this widget: `terminal-image` for rendering, `sharp` for image processing (transitive).
 
 ## Build and Test
 

@@ -1,7 +1,7 @@
 layout:
-  strategy: grid
-  maxCols: 3
-  # strategy: focus
+  # strategy: grid
+  # maxCols: 3
+  strategy: focus
   theme: liturgical
   # theme: seasonal
   # theme: vibrant
@@ -14,13 +14,9 @@ layout:
 widgets:
   - name: "Clock"
     type: clock
-    order: 1
+    order: 3
     refresh: 1
     center: true
-  - name: "Office of the Hours"
-    type: office
-    order: 3
-    refresh: 60
   - name: "Liturgical Calendar"
     type: liturgical
     order: 2
@@ -62,3 +58,11 @@ widgets:
     refresh: 60
     params:
       file: "~/Code/task/tasks.json"
+  - name: "OP"
+    type: image
+    order: 1
+    refresh: 0
+    center: true
+    params:
+      path: ./assets/op.png
+      preserveAspectRatio: true
