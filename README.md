@@ -111,6 +111,9 @@ npm run dev
 ### Keyboard Shortcuts
 
 - `q` — Quit the dashboard
+- `←` or `h` — Previous page
+- `→` or `l` — Next page
+- `c` — Open command callup (search for commands to run)
 
 ## Widgets
 
@@ -200,6 +203,17 @@ Requires commands to be installed and available in your PATH. Commands run in th
 ## Architecture
 
 The dashboard follows a modular, extensible architecture:
+
+### Pagination
+
+When the number of configured widgets exceeds what can fit on one screen (`maxCols × maxRows`), the dashboard automatically creates multiple pages. Each page renders only its subset of widgets.
+
+Navigation:
+- `←` or `h` — Previous page
+- `→` or `l` — Next page
+- Page indicator shown in the footer when there are multiple pages
+
+Example: With `maxCols: 3`, `maxRows: 2`, and 7 widgets, pages contain widgets 1–6 and 7.
 
 - **Foundation Widget Pattern:** All widgets wrap themselves in `FoundationWidget`, which provides borders, theme colors, layout positioning, and error boundaries. This ensures consistent widget appearance and isolates widget failures.
 - **Layout Engine:** Pluggable layout strategies (currently grid) compute widget positions based on terminal dimensions. The strategy is selected via configuration.

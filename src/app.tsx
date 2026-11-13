@@ -11,6 +11,7 @@ import {
 import { readFileSync } from "fs";
 import { loadConfig, DashboardConfig } from "./config/loader.js";
 import useThemeRefresh from "./hooks/useThemeRefresh.js";
+import usePages from "./hooks/usePages.js";
 import { getLayoutStrategy, LayoutResult } from "./lib/layout.js";
 import Layout from "./components/Layout.js";
 import CallupOverlay from "./components/CallupOverlay.js";
@@ -34,37 +35,48 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
   const [layout, setLayout] = React.useState<LayoutResult[]>([]);
   const [configLoaded, setConfigLoaded] = React.useState(false);
 
+  const maxWidgetsPerPage = config.maxWidgetsPerPage ?? config.layout.maxCols * 2;
+  const {
+    currentPage,
+    totalPages,
+    prevPage,
+    nextPage,
+  } = usePages(config.widgets.length, maxWidgetsPerPage);
+
   const callup = useCallup(theme);
 
   React.useEffect(() => {
     setConfigLoaded(true);
   }, []);
 
-  // Compute layout when terminal size changes
+  // Compute layout for the current page's widgets only
   React.useEffect(() => {
     if (!configLoaded) return;
 
-    const computeLayout = () => {
-      const strategy = getLayoutStrategy(config.layout.strategy);
-      const layoutResults = strategy.compute(
-        config.widgets,
-        columns,
-        rows - 1, // Reserve row for header and footer
-        {
-          maxCols: config.layout.maxCols,
-        }
-      );
-      setLayout(layoutResults);
-    };
+    const start = currentPage * maxWidgetsPerPage;
+    const pageWidgets = config.widgets.slice(start, start + maxWidgetsPerPage);
 
-    computeLayout();
-  }, [app, config, configLoaded, columns, rows]);
+    const strategy = getLayoutStrategy(config.layout.strategy);
+    const layoutResults = strategy.compute(
+      pageWidgets,
+      columns,
+      rows - 1, // Reserve row for header and footer
+      {
+        maxCols: config.layout.maxCols,
+      }
+    );
+    setLayout(layoutResults);
+  }, [app, config, configLoaded, columns, rows, currentPage, maxWidgetsPerPage]);
 
   // Handle keyboard shortcuts
   if (isRawModeSupported) {
     useInput((input, key) => {
       if (input === "q") {
         app.exit();
+      } else if (key?.leftArrow || input === "h") {
+        prevPage();
+      } else if (key?.rightArrow || input === "l") {
+        nextPage();
       } else {
         callup.handleInput(input, key);
       }
@@ -95,7 +107,7 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
       <Box height={1}>
         <Text bold color="cyan">{config.layout.header}</Text>
         <Box flexGrow={1} />
-        <Text color="gray">[c]allup [q]uit</Text>
+        <Text color="gray">[c]allup [←/→] page [q]uit</Text>
       </Box>
       {callupOpen ? (
         <CallupOverlay
@@ -110,18 +122,29 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
         />
       ) : (
         <Box backgroundColor={theme.colors.background} flexGrow={1}>
-          <Layout
-            widgets={config.widgets}
-            layout={layout}
-            theme={theme}
-            columns={columns}
-            rows={rows}
-          />
+          {(() => {
+            const start = currentPage * maxWidgetsPerPage;
+            const pageWidgets = config.widgets.slice(start, start + maxWidgetsPerPage);
+            return (
+              <Layout
+                widgets={pageWidgets}
+                layout={layout}
+                theme={theme}
+                columns={columns}
+                rows={rows}
+              />
+            );
+          })()}
         </Box>
       )}
       <Box height={1}>
         <Text bold color="cyan">{config.layout.footer}</Text>
         <Box flexGrow={1} />
+        {totalPages > 1 && (
+          <Text color="yellow">
+            Page {currentPage + 1}/{totalPages}{"      "}
+          </Text>
+        )}
         <Text color="gray">v{APP_VERSION}</Text>
       </Box>
     </Box>

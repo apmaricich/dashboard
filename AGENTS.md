@@ -156,6 +156,17 @@ npm run dev
 - **js-yaml:** YAML parsing
 - **@mishieck/ink-titled-box:** Titled borders for widget headers (installed via --legacy-peer-deps)
 
+## Pagination
+
+When more widgets are configured than can fit on one screen (`maxCols × maxRows`), the dashboard splits them across multiple pages. Only the current page's widgets are rendered.
+
+Keyboard navigation:
+- `←` or `h` — Previous page
+- `→` or `l` — Next page
+- `q` — Quit (always)
+
+Page indicator appears in the footer when `totalPages > 1`.
+
 ## Known Issues
 
 - Widget content may be truncated in narrow terminals

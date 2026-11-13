@@ -1,8 +1,9 @@
 layout:
-  # strategy: grid
-  # maxCols: 3
+  strategy: grid
+  maxCols: 2
+  maxRows: 2
   # strategy: focus
-  strategy: banner
+  # strategy: banner
   theme: liturgical
   # theme: seasonal
   # theme: vibrant

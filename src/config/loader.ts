@@ -24,6 +24,8 @@ export interface DashboardConfig {
     strategy: string;
     /** Maximum number of columns in the layout grid */
     maxCols: number;
+    /** Maximum number of rows in the layout grid (default: 2) */
+    maxRows?: number;
     /** UI theme name (e.g., 'light', 'dark') */
     theme: string;
     /** Optional header text */
@@ -35,6 +37,8 @@ export interface DashboardConfig {
   };
   /** Array of widget configurations to render */
   widgets: WidgetConfig[];
+  /** Maximum widgets that fit on a single page (computed from maxCols * maxRows) */
+  maxWidgetsPerPage: number;
 }
 
 /**
@@ -73,9 +77,11 @@ const DEFAULT_CONFIG: DashboardConfig = {
   layout: {
     strategy: "grid",
     maxCols: 3,
+    maxRows: 2,
     theme: "liturgical",
     header: "Dashboard",
   },
+  maxWidgetsPerPage: 6,
   widgets: [
     {
       name: "Liturgical Calendar",
@@ -117,7 +123,24 @@ export function loadConfig(path: string): DashboardConfig {
   }
   try {
     const content = readFileSync(path, "utf-8");
-    return yaml.load(content) as DashboardConfig;
+    const raw = yaml.load(content) as DashboardConfig;
+
+    // Compute maxWidgetsPerPage from maxCols * maxRows
+    const maxRows = raw.layout?.maxRows ?? 2;
+    const maxCols = raw.layout?.maxCols ?? 3;
+
+    if (!Number.isInteger(maxRows) || maxRows <= 0) {
+      throw new Error("layout.maxRows must be a positive integer");
+    }
+    if (!Number.isInteger(maxCols) || maxCols <= 0) {
+      throw new Error("layout.maxCols must be a positive integer");
+    }
+
+    return {
+      ...raw,
+      layout: { ...raw.layout, maxRows },
+      maxWidgetsPerPage: maxCols * maxRows,
+    };
   } catch (err) {
     throw new Error(`Failed to parse config file ${path}: ${err}`);
   }
