@@ -10,7 +10,7 @@ import {
 } from "ink";
 import { readFileSync } from "fs";
 import { loadConfig, DashboardConfig } from "./config/loader.js";
-import { getTheme, Theme } from "./themes/index.js";
+import useThemeRefresh from "./hooks/useThemeRefresh.js";
 import { getLayoutStrategy, LayoutResult } from "./lib/layout.js";
 import Layout from "./components/Layout.js";
 import CallupOverlay from "./components/CallupOverlay.js";
@@ -27,13 +27,14 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
   const app = useApp();
   const { columns, rows } = useWindowSize();
   const { isRawModeSupported } = useStdin();
-  const [theme, setTheme] = React.useState<Theme>(
-    getTheme(config.layout.theme, { date: new Date() })
-  );
+  const theme = useThemeRefresh({
+    themeName: config.layout.theme,
+    refreshConfig: config.layout.themeRefresh,
+  });
   const [layout, setLayout] = React.useState<LayoutResult[]>([]);
   const [configLoaded, setConfigLoaded] = React.useState(false);
 
-  const callup = useCallup();
+  const callup = useCallup(theme);
 
   React.useEffect(() => {
     setConfigLoaded(true);
@@ -103,6 +104,7 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
           selected={callupSelected}
           activeWidgetType={activeWidget}
           activeWidgetComponent={activeWidgetComponent}
+          theme={theme}
           onQueryChange={() => {}}
           onSelect={callupSelect}
         />
@@ -138,7 +140,6 @@ async function main() {
       configPath = process.argv[idx + 1];
     }
   }
-
   let config: DashboardConfig;
   try {
     config = loadConfig(configPath);

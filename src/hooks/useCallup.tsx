@@ -21,7 +21,7 @@ interface InkKey {
   backspace?: boolean;
 }
 
-export function useCallup() {
+export function useCallup(activeTheme: any) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(0);
@@ -136,7 +136,7 @@ export function useCallup() {
     const entry = getWidgetByType(activeWidget);
     if (entry) {
       const WidgetComponent = entry.component;
-      const theme = getTheme("liturgical", { date: new Date() });
+      const theme = activeTheme;
       const layout: LayoutResult = {
         x: 0,
         y: 0,

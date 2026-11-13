@@ -2,9 +2,12 @@ layout:
   strategy: grid
   maxCols: 3
   # strategy: focus
-  # theme: liturgical
-  theme: seasonal
+  theme: liturgical
+  # theme: seasonal
   # theme: vibrant
+  themeRefresh:
+    atHour: 23
+    # intervalHours: 3
   header: "Veritas"
   footer: "Success is defined by your willingness to keep going."
 
@@ -53,3 +56,9 @@ widgets:
     params:
       startHour: 8
       endHour: 16
+  - name: "Task"
+    type: tasklist
+    order: 8
+    refresh: 60
+    params:
+      file: "~/Code/task/tasks.json"

@@ -163,6 +163,29 @@ Displays system resource usage with visual progress bars:
 
 Uses the [`systeminformation`](https://github.com/sebhildebrandt/systeminformation) package. Refreshes every 5 seconds.
 
+### Task List (`type: tasklist`)
+
+Displays a list of tasks from a Taskfile. Runs the [`task`](https://taskfile.dev/) CLI with a configurable file path and displays the output.
+
+```yaml
+widgets:
+  - name: "Tasks"
+    type: tasklist
+    order: 5
+    refresh: 60
+    params:
+      file: "tasks.json"  # Path to the Taskfile (required)
+```
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `file` | string | Yes | Path to the Taskfile or tasks.json to use |
+| `task` | string | No | Optional specific task name to run instead of listing |
+
+Requires the `task` CLI to be installed and available in your PATH.
+
 ## Architecture
 
 The dashboard follows a modular, extensible architecture:

@@ -6,6 +6,17 @@ import * as yaml from "js-yaml";
  * @property layout - Layout settings including strategy, column count, and theme
  * @property widgets - Ordered array of widget definitions to render
  */
+/**
+ * Theme refresh configuration.
+ * Exactly one of intervalHours or atHour should be specified.
+ */
+export interface ThemeRefreshConfig {
+  /** Refresh theme every N hours */
+  intervalHours?: number;
+  /** Refresh theme at a specific hour of day (24h format) */
+  atHour?: number;
+}
+
 export interface DashboardConfig {
   /** Layout configuration */
   layout: {
@@ -19,6 +30,8 @@ export interface DashboardConfig {
     header?: string;
     /** Optional footer text */
     footer?: string;
+    /** Optional theme refresh configuration */
+    themeRefresh?: ThemeRefreshConfig;
   };
   /** Array of widget configurations to render */
   widgets: WidgetConfig[];
