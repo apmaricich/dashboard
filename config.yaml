@@ -1,7 +1,8 @@
 layout:
   # strategy: grid
   # maxCols: 3
-  strategy: focus
+  # strategy: focus
+  strategy: banner
   theme: liturgical
   # theme: seasonal
   # theme: vibrant
@@ -14,7 +15,7 @@ layout:
 widgets:
   - name: "Clock"
     type: clock
-    order: 3
+    order: 1
     refresh: 1
     center: true
   - name: "Liturgical Calendar"
@@ -23,11 +24,11 @@ widgets:
     refresh: 60
     params:
       showProgress: true
-  - name: "System Metrics"
-    type: system
-    order: 6
-    refresh: 5
-    center: true
+  # - name: "System Metrics"
+    # type: system
+    # order: 6
+    # refresh: 5
+    # center: true
   - name: "MLX Status"
     type: mlx
     order: 7
@@ -52,17 +53,23 @@ widgets:
     params:
       startHour: 8
       endHour: 16
-  - name: "Task"
-    type: tasklist
+  - name: "CalMCP Tasks"
+    type: shell
     order: 8
     refresh: 60
     params:
-      file: "~/Code/task/tasks.json"
-  - name: "OP"
-    type: image
-    order: 1
-    refresh: 0
-    center: true
+      command: "task --file ~/Code/CalMCP/tasks.json"
+  - name: "CalMCP Stats"
+    type: shell
+    order: 8
+    refresh: 60
     params:
-      path: ./assets/op.png
-      preserveAspectRatio: true
+      command: "task stats --file ~/Code/CalMCP/tasks.json"
+  # - name: "OP"
+    # type: image
+    # order: 1
+    # refresh: 0
+    # center: true
+    # params:
+      # path: ./assets/op.png
+      # preserveAspectRatio: true

@@ -212,5 +212,83 @@ export function focusLayoutStrategy(): LayoutStrategy {
 }
 
 // Register layout strategies
+/**
+ * Create a banner layout strategy where the first widget spans the full width
+ * at the top, and remaining widgets fill a grid below it.
+ */
+export function bannerLayoutStrategy(): LayoutStrategy {
+  return {
+    compute(
+      widgets: WidgetConfig[],
+      containerWidth: number,
+      containerHeight: number,
+      layoutOptions?: LayoutOptions
+    ): LayoutResult[] {
+      const maxCols = layoutOptions?.maxCols ?? 3;
+
+      const results = widgets.map((widget, index) => ({
+        widget,
+        index
+      }));
+
+      results.sort((a, b) => a.widget.order - b.widget.order);
+
+      if (results.length === 0) {
+        return [];
+      }
+
+      if (results.length === 1) {
+        return [{
+          x: 0,
+          y: 0,
+          width: containerWidth,
+          height: containerHeight
+        }];
+      }
+
+      // Banner widget takes top row with full width
+      const bannerHeight = Math.floor(containerHeight * 0.25);
+      const gridHeight = containerHeight - bannerHeight;
+      const layoutResults: LayoutResult[] = [];
+
+      // Layout banner widget
+      layoutResults[results[0].index] = {
+        x: 0,
+        y: 0,
+        width: containerWidth,
+        height: bannerHeight
+      };
+
+      // Layout remaining widgets in grid below
+      const remainingWidgets = results.slice(1);
+      const numRows = Math.ceil(remainingWidgets.length / maxCols);
+      const cellHeight = Math.floor(gridHeight / numRows);
+
+      for (let row = 0; row < numRows; row++) {
+        const rowWidgets = remainingWidgets.slice(row * maxCols, (row + 1) * maxCols);
+        if (rowWidgets.length === 0) continue;
+
+        const cellWidth = Math.floor(containerWidth / rowWidgets.length);
+        const remainder = containerWidth - (cellWidth * rowWidgets.length);
+
+        for (let col = 0; col < rowWidgets.length; col++) {
+          const { index } = rowWidgets[col];
+          const width = col === rowWidgets.length - 1 ? cellWidth + remainder : cellWidth;
+          layoutResults[index] = {
+            x: col * cellWidth,
+            y: bannerHeight + row * cellHeight,
+            width,
+            height: cellHeight
+          };
+        }
+      }
+
+      return layoutResults;
+    }
+  };
+}
+
+// Register layout strategies
 registerLayoutStrategy('grid', gridLayoutStrategy());
 registerLayoutStrategy('focus', focusLayoutStrategy());
+registerLayoutStrategy('banner', bannerLayoutStrategy());

@@ -8,7 +8,7 @@ A configurable, flat-file-driven terminal dashboard built with Ink (React for te
 
 - **Modular widget architecture:** Each widget is a self-contained React component
 - **Foundation widget pattern:** All widgets wrap themselves in a `FoundationWidget` that provides layout, theme, and refresh cycle management
-- **Layout engine:** Pluggable layout strategies (grid, spiral, etc.) with maxCols configuration
+- **Layout engine:** Pluggable layout strategies (grid, banner, etc.) with maxCols configuration. Banner layout places the first widget as a full-width top banner (25% of height) with remaining widgets in a grid below.
 - **Theme system:** Dynamic theming with liturgical color support
 - **Flat-file configuration:** All settings in `config.yaml`
 
@@ -47,7 +47,7 @@ src/
 
 - **FoundationWidget:** Provides borders, theme colors, and layout positioning for all widgets. Uses React Context to pass theme and layout info to children.
 - **useRefresh Hook:** Manages periodic data fetching with configurable intervals. Uses `useCallback` to prevent infinite re-renders.
-- **Layout Engine:** Computes widget positions based on strategy (grid, etc.). Handles widget wrapping when maxCols is exceeded.
+- **Layout Engine:** Computes widget positions based on strategy (grid, banner, etc.). Handles widget wrapping when maxCols is exceeded.
 - **Theme System:** Registered themes return color palettes. Liturgical theme uses romcal to determine today's liturgical color.
 
 ## Configuration
@@ -55,6 +55,7 @@ src/
 ```yaml
 layout:
   strategy: grid
+  # Options: grid, banner
   maxCols: 3
   theme: liturgical
   # Options: liturgical, seasonal

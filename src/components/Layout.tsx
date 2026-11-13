@@ -12,8 +12,8 @@ import ClockWidget from "./widgets/ClockWidget.js";
 import LiturgicalYearProgress from "./widgets/LiturgicalYearProgress.js";
 import Weather from "./widgets/Weather.js";
 import WorkDay from "./widgets/WorkDay.js";
-import TaskList from "./widgets/TaskList.js";
 import ImageWidget from "./widgets/ImageWidget.js";
+import Shell from "./widgets/Shell.js";
 
 /**
  * Widget type registry mapping widget type names to React components.
@@ -28,8 +28,8 @@ widgetRegistry.set("mlx", MlxStatus);
 widgetRegistry.set("clock", ClockWidget);
 widgetRegistry.set("weather", Weather);
 widgetRegistry.set("workday", WorkDay);
-widgetRegistry.set("tasklist", TaskList);
 widgetRegistry.set("image", ImageWidget);
+widgetRegistry.set("shell", Shell);
 
 export interface LayoutProps {
   /** Widget configurations to render */

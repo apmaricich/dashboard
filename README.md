@@ -66,11 +66,13 @@ widgets:
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `strategy` | string | `"grid"` | Layout algorithm (`grid` currently supported) |
+| `strategy` | string | `"grid"` | Layout algorithm (`grid` or `banner`) |
 | `maxCols` | integer | 3 | Maximum number of columns for grid layout |
 | `theme` | string | `"liturgical"` | Theme identifier (`liturgical`, `seasonal`) |
 | `header` | string | `"Dashboard"` | Header text displayed at the top |
 | `footer` | string | - | Optional footer text |
+
+**Banner layout:** The first widget (by order) becomes a full-width banner at the top (25% of height), with remaining widgets filling a grid below.
 
 ### Widget Configuration
 
@@ -163,28 +165,37 @@ Displays system resource usage with visual progress bars:
 
 Uses the [`systeminformation`](https://github.com/sebhildebrandt/systeminformation) package. Refreshes every 5 seconds.
 
-### Task List (`type: tasklist`)
+### Shell Command (`type: shell`)
 
-Displays a list of tasks from a Taskfile. Runs the [`task`](https://taskfile.dev/) CLI with a configurable file path and displays the output.
+Executes an arbitrary shell command and displays its output as a widget.
 
 ```yaml
 widgets:
-  - name: "Tasks"
-    type: tasklist
+  - name: "Task List"
+    type: shell
     order: 5
     refresh: 60
     params:
-      file: "tasks.json"  # Path to the Taskfile (required)
+      command: "task --file tasks.json"
+
+  - name: "Disk Usage"
+    type: shell
+    order: 6
+    refresh: 300
+    params:
+      command: "df -h / | tail -1 | awk '{print $5}'"
 ```
 
 **Parameters:**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `file` | string | Yes | Path to the Taskfile or tasks.json to use |
-| `task` | string | No | Optional specific task name to run instead of listing |
+| `command` | string | Yes | The shell command to execute |
+| `env` | object | No | Environment variables to pass to the command |
 
-Requires the `task` CLI to be installed and available in your PATH.
+Requires commands to be installed and available in your PATH. Commands run in the user's shell environment.
+
+**Security note:** The shell widget executes commands with your user permissions. Be careful with commands that modify system state.
 
 ## Architecture
 
