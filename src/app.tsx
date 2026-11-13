@@ -53,8 +53,11 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
   React.useEffect(() => {
     if (!configLoaded) return;
 
+    // Sort widgets by order before slicing for pagination
+    const sortedWidgets = [...config.widgets].sort((a, b) => a.order - b.order);
+
     const start = currentPage * maxWidgetsPerPage;
-    const pageWidgets = config.widgets.slice(start, start + maxWidgetsPerPage);
+    const pageWidgets = sortedWidgets.slice(start, start + maxWidgetsPerPage);
 
     const strategy = getLayoutStrategy(config.layout.strategy);
     const layoutResults = strategy.compute(
@@ -123,8 +126,9 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
       ) : (
         <Box backgroundColor={theme.colors.background} flexGrow={1}>
           {(() => {
+            const sortedWidgets = [...config.widgets].sort((a, b) => a.order - b.order);
             const start = currentPage * maxWidgetsPerPage;
-            const pageWidgets = config.widgets.slice(start, start + maxWidgetsPerPage);
+            const pageWidgets = sortedWidgets.slice(start, start + maxWidgetsPerPage);
             return (
               <Layout
                 widgets={pageWidgets}

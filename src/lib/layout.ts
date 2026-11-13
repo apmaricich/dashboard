@@ -36,6 +36,8 @@ export interface LayoutStrategy {
 export interface LayoutOptions {
   /** Maximum number of columns in grid layout */
   maxCols?: number;
+  /** Maximum number of rows in grid layout */
+  maxRows?: number;
 }
 
 /**
@@ -51,6 +53,7 @@ export function gridLayoutStrategy(options?: LayoutOptions): LayoutStrategy {
       layoutOptions?: LayoutOptions
     ): LayoutResult[] {
       const maxCols = layoutOptions?.maxCols ?? options?.maxCols ?? 4;
+      const maxRows = layoutOptions?.maxRows ?? 2;
 
       const results = widgets.map((widget, index) => ({
         widget,
@@ -72,7 +75,10 @@ export function gridLayoutStrategy(options?: LayoutOptions): LayoutStrategy {
         }];
       }
 
-      const numRows = Math.ceil(results.length / maxCols);
+      // Compute number of rows based on widget count and maxCols
+      const computedRows = Math.ceil(results.length / maxCols);
+      // Use the minimum of computedRows and maxRows
+      const numRows = Math.min(computedRows, maxRows);
       const cellHeight = Math.floor(containerHeight / numRows);
 
       // Group widgets into rows

@@ -39,7 +39,7 @@ widgets:
       endpoint: "http://localhost:8080"
   - name: "Weather (Bowie, MD)"
     type: weather
-    order: 5
+    order: 4
     refresh: 600
     center: true
     params:
@@ -48,7 +48,7 @@ widgets:
       temperatureUnit: fahrenheit
   - name: "Work Progress"
     type: workday
-    order: 4
+    order: 3
     refresh: 60
     center: true
     params:
@@ -62,7 +62,7 @@ widgets:
       command: "task --file ~/Code/CalMCP/tasks.json"
   - name: "CalMCP Stats"
     type: shell
-    order: 8
+    order: 9
     refresh: 60
     params:
       command: "task stats --file ~/Code/CalMCP/tasks.json"
