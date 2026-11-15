@@ -10,8 +10,18 @@ layout:
   themeRefresh:
     atHour: 23
     # intervalHours: 3
-  header: "Veritas"
-  footer: "Success is defined by your willingness to keep going."
+  header: "${date} | Veritas | ${time}"
+  footer: "${music} | Success is defined by your willingness to keep going."
+  vars:
+    date:
+      command: "echo $(date +%a | cut -c1)$(date +%y)•$(date +%m)•$(date +%d)"
+      refresh: 43200 # 12 hours
+    music:
+      command: "printf '%s\\n' 'tell application \"Music\"' 'if player state is playing then' 'return \"♪ \" & name of current track & \" — \" & artist of current track' 'else' 'return \"No music playing\"' 'end if' 'end tell' | osascript"
+      refresh: 30
+    time:
+      command: "date +%H:%M"
+      refresh: 1
 
 widgets:
   - name: "Clock"
@@ -89,9 +99,4 @@ widgets:
     params:
       path: ./assets/op.png
       preserveAspectRatio: true
-  - name: "Now Playing"
-    type: shell
-    order: 10
-    refresh: 30
-    params:
-      command: "printf '%s\\n' 'tell application \"Music\"' 'if player state is playing then' 'return \"♪ \" & name of current track & \" — \" & artist of current track' 'else' 'return \"No music playing\"' 'end if' 'end tell' | osascript"
+

@@ -17,6 +17,8 @@ import { shouldShowWidget } from "./lib/day-utils.js";
 import Layout from "./components/Layout.js";
 import CallupOverlay from "./components/CallupOverlay.js";
 import { useCallup } from "./hooks/useCallup.js";
+import { useLayoutVars } from "./hooks/useLayoutVars.js";
+import { resolveTemplate } from "./lib/template.js";
 
 // Read version from package.json (from project root)
 const pkg = JSON.parse(readFileSync("package.json", "utf-8"));
@@ -49,6 +51,7 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
   } = usePages(visibleWidgets.length, maxWidgetsPerPage);
 
   const callup = useCallup(theme);
+  const { values: layoutVarValues } = useLayoutVars(config.layout.vars ?? {});
 
   React.useEffect(() => {
     setConfigLoaded(true);
@@ -113,7 +116,7 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
   return (
     <Box flexDirection="column" height={rows}>
       <Box height={1}>
-        <Text bold color="cyan">{config.layout.header}</Text>
+        <Text bold color="cyan">{resolveTemplate(config.layout.header ?? "", layoutVarValues)}</Text>
         <Box flexGrow={1} />
         <Text color="gray">[c]allup [←/→] page [q]uit</Text>
       </Box>
@@ -147,7 +150,7 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
         </Box>
       )}
       <Box height={1}>
-        <Text bold color="cyan">{config.layout.footer}</Text>
+        <Text bold color="cyan">{resolveTemplate(config.layout.footer ?? "", layoutVarValues)}</Text>
         <Box flexGrow={1} />
         {totalPages > 1 && (
           <Text color="yellow">

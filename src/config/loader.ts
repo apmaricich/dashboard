@@ -17,6 +17,13 @@ export interface ThemeRefreshConfig {
   atHour?: number;
 }
 
+export interface LayoutVarConfig {
+  /** Shell command to execute; output is used as the variable's value */
+  command: string;
+  /** How often to re-run the command, in seconds */
+  refresh: number;
+}
+
 export interface DashboardConfig {
   /** Layout configuration */
   layout: {
@@ -28,10 +35,16 @@ export interface DashboardConfig {
     maxRows?: number;
     /** UI theme name (e.g., 'light', 'dark') */
     theme: string;
-    /** Optional header text */
+    /** Optional header text (supports template variables like ${varName}) */
     header?: string;
-    /** Optional footer text */
+    /** Optional footer text (supports template variables like ${varName}) */
     footer?: string;
+    /**
+     * Optional layout variables. Each variable's value is resolved by
+     * running its command and captured on each refresh cycle. Used for
+     * dynamic content in the header/footer.
+     */
+    vars?: { [name: string]: LayoutVarConfig };
     /** Optional theme refresh configuration */
     themeRefresh?: ThemeRefreshConfig;
   };
@@ -91,6 +104,7 @@ const DEFAULT_CONFIG: DashboardConfig = {
     maxRows: 2,
     theme: "liturgical",
     header: "Dashboard",
+    vars: {},
   },
   maxWidgetsPerPage: 6,
   widgets: [
@@ -168,9 +182,30 @@ export function loadConfig(path: string): DashboardConfig {
       if (widget.daysHidden) validateDayArray(widget.daysHidden, "daysHidden");
     }
 
+    // Ensure layout.vars is always present (empty object if not specified)
+    const layout = raw.layout ?? {};
+    if (layout.vars === undefined) {
+      layout.vars = {};
+    }
+
+    // Validate var command and refresh values
+    for (const [name, varConfig] of Object.entries(layout.vars)) {
+      if (!varConfig.command || typeof varConfig.command !== "string") {
+        throw new Error(`layout.vars.${name} must have a non-empty string command`);
+      }
+      if (
+        varConfig.refresh === undefined ||
+        typeof varConfig.refresh !== "number" ||
+        !Number.isInteger(varConfig.refresh) ||
+        varConfig.refresh <= 0
+      ) {
+        throw new Error(`layout.vars.${name} must have a positive integer refresh`);
+      }
+    }
+
     return {
       ...raw,
-      layout: { ...raw.layout, maxRows },
+      layout: { ...layout, maxRows },
       maxWidgetsPerPage: maxCols * maxRows,
     };
   } catch (err) {

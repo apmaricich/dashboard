@@ -150,6 +150,33 @@ widgets:
     refresh: 0
 ```
 
+### Layout Variables
+
+Use `${varName}` in the `header` and `footer` strings to inject dynamic values from shell commands. Define variables in `layout.vars`. Each variable has:
+
+- `command` (string, required): Shell command to execute. Its stdout (trimmed) replaces the `${varName}` placeholder.
+- `refresh` (number, optional): Interval in seconds between command re-executions. Defaults to the layout refresh interval. Variables refresh on independent schedules.
+
+**Example — dynamic header and footer:**
+```yaml
+layout:
+  strategy: grid
+  maxCols: 3
+  header: "🎵 ${music} | Dashboard"
+  footer: "${time}"
+  vars:
+    music:
+      command: "sh /Users/me/scripts/now-playing.sh"
+      refresh: 15
+    time:
+      command: "date '+%I:%M %p'"
+      refresh: 5
+```
+
+This renders a header like "🎵 Pink Floyd - Wish You Were Here | Dashboard" and a footer showing the current time, with the music command running every 15 seconds and the time command every 5 seconds.
+
+Plain strings without `${}` placeholders remain fully supported for backward compatibility — the vars feature is opt-in.
+
 ## Build and Test
 
 ### Prerequisites
