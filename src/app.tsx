@@ -13,6 +13,7 @@ import { loadConfig, DashboardConfig } from "./config/loader.js";
 import useThemeRefresh from "./hooks/useThemeRefresh.js";
 import usePages from "./hooks/usePages.js";
 import { getLayoutStrategy, LayoutResult } from "./lib/layout.js";
+import { shouldShowWidget } from "./lib/day-utils.js";
 import Layout from "./components/Layout.js";
 import CallupOverlay from "./components/CallupOverlay.js";
 import { useCallup } from "./hooks/useCallup.js";
@@ -35,13 +36,17 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
   const [layout, setLayout] = React.useState<LayoutResult[]>([]);
   const [configLoaded, setConfigLoaded] = React.useState(false);
 
+  const visibleWidgets = React.useMemo(() => {
+    return config.widgets.filter(shouldShowWidget);
+  }, [config]);
+
   const maxWidgetsPerPage = config.maxWidgetsPerPage ?? config.layout.maxCols * 2;
   const {
     currentPage,
     totalPages,
     prevPage,
     nextPage,
-  } = usePages(config.widgets.length, maxWidgetsPerPage);
+  } = usePages(visibleWidgets.length, maxWidgetsPerPage);
 
   const callup = useCallup(theme);
 
@@ -53,8 +58,8 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
   React.useEffect(() => {
     if (!configLoaded) return;
 
-    // Sort widgets by order before slicing for pagination
-    const sortedWidgets = [...config.widgets].sort((a, b) => a.order - b.order);
+    // Sort visible widgets by order before slicing for pagination
+    const sortedWidgets = [...visibleWidgets].sort((a, b) => a.order - b.order);
 
     const start = currentPage * maxWidgetsPerPage;
     const pageWidgets = sortedWidgets.slice(start, start + maxWidgetsPerPage);
@@ -69,7 +74,7 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
       }
     );
     setLayout(layoutResults);
-  }, [app, config, configLoaded, columns, rows, currentPage, maxWidgetsPerPage]);
+  }, [app, visibleWidgets, configLoaded, columns, rows, currentPage, maxWidgetsPerPage]);
 
   // Handle keyboard shortcuts
   if (isRawModeSupported) {
@@ -126,7 +131,7 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
       ) : (
         <Box backgroundColor={theme.colors.background} flexGrow={1}>
           {(() => {
-            const sortedWidgets = [...config.widgets].sort((a, b) => a.order - b.order);
+            const sortedWidgets = [...visibleWidgets].sort((a, b) => a.order - b.order);
             const start = currentPage * maxWidgetsPerPage;
             const pageWidgets = sortedWidgets.slice(start, start + maxWidgetsPerPage);
             return (

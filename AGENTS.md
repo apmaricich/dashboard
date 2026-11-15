@@ -103,6 +103,53 @@ Note: `refresh: 0` is recommended for static images. Use periodic refresh (e.g.,
 
 Dependencies used by this widget: `terminal-image` for rendering, `sharp` for image processing (transitive).
 
+### Widget Day-of-Week Visibility
+
+Widgets can be configured to show or hide on specific days of the week using `daysShown` and `daysHidden` fields. ISO weekday numbers are used (1=Monday, 2=Tuesday, ..., 6=Saturday, 7=Sunday).
+
+**Named placeholders:**
+- `weekdays` — Monday through Friday ([1,2,3,4,5])
+- `weekends` — Saturday and Sunday ([6,7])
+- `all` — Every day ([1,2,3,4,5,6,7])
+
+**Precedence rules:**
+- If `daysShown` is specified, the widget appears only on those days
+- If only `daysHidden` is specified, the widget appears on all other days
+- If both are specified, `daysShown` takes precedence
+- If neither is specified, the widget appears every day
+
+**Example — weekday-only system metrics:**
+```yaml
+widgets:
+  - name: "System Metrics"
+    type: system
+    order: 1
+    daysShown: [weekdays]
+    refresh: 5
+```
+
+**Example — hide MLX status on weekends:**
+```yaml
+widgets:
+  - name: "MLX Status"
+    type: mlx
+    order: 2
+    daysHidden: [weekends]
+    refresh: 30
+```
+
+**Example — mixed usage:**
+```yaml
+widgets:
+  - name: "Sunday Special"
+    type: image
+    order: 3
+    daysShown: [weekdays, 7]  # Mon-Fri plus Sunday
+    params:
+      path: ./assets/sunday.png
+    refresh: 0
+```
+
 ## Build and Test
 
 ### Prerequisites

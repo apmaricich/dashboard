@@ -49,6 +49,13 @@ export interface DashboardConfig {
  * @property refresh - Refresh interval in seconds
  * @property params - Optional type-specific configuration parameters
  */
+/**
+ * A day specification for widget visibility scheduling.
+ * Can be an ISO weekday number (1=Monday through 7=Sunday) or a named placeholder
+ * ("weekdays" for 1-5, "weekends" for 6-7, "all" for every day).
+ */
+export type DayEntry = number | "weekdays" | "weekends" | "all";
+
 export interface WidgetConfig {
   /** Human-readable display name for the widget */
   name: string;
@@ -62,6 +69,10 @@ export interface WidgetConfig {
   params?: Record<string, unknown>;
   /** When true, center the widget content within its box */
   center?: boolean;
+  /** Only show this widget on the specified days of the week */
+  daysShown?: DayEntry[];
+  /** Hide this widget on the specified days of the week */
+  daysHidden?: DayEntry[];
 }
 
 /**
@@ -134,6 +145,27 @@ export function loadConfig(path: string): DashboardConfig {
     }
     if (!Number.isInteger(maxCols) || maxCols <= 0) {
       throw new Error("layout.maxCols must be a positive integer");
+    }
+
+    // Validate day entries in each widget
+    for (const widget of raw.widgets) {
+      const name = widget.name ?? "unnamed";
+      const validateDayArray = (entries: DayEntry[], field: "daysShown" | "daysHidden") => {
+        for (const entry of entries) {
+          if (typeof entry === "number") {
+            if (!Number.isInteger(entry) || entry < 1 || entry > 7) {
+              throw new Error(`Widget '${name}' has invalid day value ${entry} in ${field}`);
+            }
+          } else if (entry !== "weekdays" && entry !== "weekends" && entry !== "all") {
+            throw new Error(
+              `Widget '${name}' has invalid day name '${entry}' in ${field} (expected 'weekdays', 'weekends', or 'all')`
+            );
+          }
+        }
+      };
+
+      if (widget.daysShown) validateDayArray(widget.daysShown, "daysShown");
+      if (widget.daysHidden) validateDayArray(widget.daysHidden, "daysHidden");
     }
 
     return {
