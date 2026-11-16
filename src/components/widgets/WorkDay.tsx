@@ -54,6 +54,8 @@ function renderBar(percent: number, width: number): string {
 
 const WorkDay = () => {
   const { config, theme } = useWidgetContext();
+  const now = new Date();
+  const weekday = now.toLocaleDateString("en-US", { weekday: "long" });
 
   const params = (config.params as WorkDayParams) || {};
   const startHour = params.startHour ?? 8; // Default 8 AM
@@ -102,6 +104,9 @@ const WorkDay = () => {
       </Box>
       <Box>
         <Text color={theme.colors.accent}>{progress.timeRemaining}</Text>
+      </Box>
+      <Box>
+        <Text color={theme.colors.border}>{weekday}</Text>
       </Box>
     </Box>
   );

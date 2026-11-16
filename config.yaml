@@ -1,6 +1,6 @@
 layout:
   strategy: grid
-  maxCols: 2
+  maxCols: 3
   maxRows: 2
   # strategy: focus
   # strategy: banner
@@ -14,7 +14,7 @@ layout:
   footer: "${music} | Success is defined by your willingness to keep going."
   vars:
     date:
-      command: "echo $(date +%a | cut -c1)$(date +%y)•$(date +%m)•$(date +%d)"
+      command: "echo S$(date +%y)•$(date +%m)•$(date +%d)"
       refresh: 43200 # 12 hours
     music:
       command: "printf '%s\\n' 'tell application \"Music\"' 'if player state is playing then' 'return \"♪ \" & name of current track & \" — \" & artist of current track' 'else' 'return \"No music playing\"' 'end if' 'end tell' | osascript"
@@ -50,7 +50,7 @@ widgets:
       endpoint: "http://localhost:8080"
   - name: "Weather (Bowie, MD)"
     type: weather
-    order: 4
+    order: 3
     refresh: 600
     center: true
     params:
@@ -59,13 +59,20 @@ widgets:
       temperatureUnit: fahrenheit
   - name: "Work Progress"
     type: workday
-    order: 3
+    order: 4
     refresh: 60
     center: true
     daysHidden: ["weekends"]
     params:
       startHour: 8
       endHour: 16
+  - name: "Pomodoro"
+    type: shell
+    order: 5
+    refresh: 600
+    center: true
+    params:
+      command: "pomo stats"
   - name: "CalMCP Tasks"
     type: shell
     order: 8
