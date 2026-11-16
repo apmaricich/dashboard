@@ -29,12 +29,15 @@ widgets:
     order: 1
     refresh: 1
     center: true
+
   - name: "Liturgical Calendar"
     type: liturgical
     order: 2
     refresh: 60
     params:
       showProgress: true
+      showKey: false
+
   - name: "System Metrics"
     type: system
     order: 6

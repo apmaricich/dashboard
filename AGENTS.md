@@ -103,6 +103,25 @@ Note: `refresh: 0` is recommended for static images. Use periodic refresh (e.g.,
 
 Dependencies used by this widget: `terminal-image` for rendering, `sharp` for image processing (transitive).
 
+### Liturgical Widget Configuration
+
+The `liturgical` widget displays the current liturgical calendar information and an optional progress bar. Available params:
+
+- `showProgress` (boolean): Show the liturgical year progress bar at the bottom of the widget (default: true).
+- `showKey` (boolean): Show the legend/key row beneath the progress bar that explains the holiday symbols (default: true). Only applies when showProgress is true.
+
+**Example — hide the progress key:**
+```yaml
+widgets:
+  - name: "Liturgical Calendar"
+    type: liturgical
+    order: 1
+    params:
+      showProgress: true
+      showKey: false
+    refresh: 3600
+```
+
 ### Widget Day-of-Week Visibility
 
 Widgets can be configured to show or hide on specific days of the week using `daysShown` and `daysHidden` fields. ISO weekday numbers are used (1=Monday, 2=Tuesday, ..., 6=Saturday, 7=Sunday).

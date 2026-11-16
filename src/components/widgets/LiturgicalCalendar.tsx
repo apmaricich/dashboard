@@ -27,6 +27,8 @@ const LiturgicalCalendar = ({ config }: { config?: WidgetConfig }) => {
 
   // Check if progress bar should be shown (default: true)
   const showProgress = config?.params?.showProgress !== false;
+  // Check if the progress label (key) should be shown (default: true)
+  const showKey = config?.params?.showKey !== false;
 
   if (isLoading) {
     return (
@@ -99,7 +101,7 @@ const LiturgicalCalendar = ({ config }: { config?: WidgetConfig }) => {
       </Box>
       {showProgress && (
         <Box marginY={1}>
-          <LiturgicalYearProgress />
+          <LiturgicalYearProgress showKey={showKey} />
         </Box>
       )}
     </Box>

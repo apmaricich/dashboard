@@ -8,7 +8,16 @@ import { useWidgetContext } from "../FoundationWidget.js";
  * Liturgical Year Progress widget showing a horizontal timeline of all
  * liturgical seasons with proportionate widths and a current position marker.
  */
-const LiturgicalYearProgress = () => {
+import { WidgetConfig } from "../../config/loader.js";
+
+interface Props {
+  config?: WidgetConfig;
+  showKey?: boolean;
+}
+
+const LiturgicalYearProgress = ({ config, showKey }: Props) => {
+  // showKey can be passed directly or via config.params
+  const effectiveShowKey = showKey ?? (config?.params?.showKey !== false);
   const { theme, layout } = useWidgetContext();
 
   const dataFn = useCallback(async () => liturgicalYear(), []);
@@ -218,11 +227,13 @@ const LiturgicalYearProgress = () => {
       <HolyDayIndicators />
       <ProgressBar />
       <PositionIndicator indicatorLeft={markerIndex >= barWidth / 2} />
-      <Box>
-        <Text color="gray">
-          {"🎄Christmas 🌿Easter 🔥Pentecost 🍞CorpusChristi 🌾Lent 🕯️Advent"}
-        </Text>
-      </Box>
+      {effectiveShowKey && (
+        <Box>
+          <Text color="gray">
+            {"🎄Christmas 🌿Easter 🔥Pentecost 🍞CorpusChristi 🌾Lent 🕯️Advent"}
+          </Text>
+        </Box>
+      )}
     </Box>
   );
 };
