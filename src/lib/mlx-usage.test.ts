@@ -182,4 +182,103 @@ describe("computeUsageDelta", () => {
       processRestarted: false,
     });
   });
+
+  test("persists snapshot across multiple calls (regression)", async () => {
+    const { writeFileSync } = await import("fs");
+    (writeFileSync as Mock).mockClear();
+
+    // Establish baseline snapshot
+    const baselineMetrics = makeMetrics({
+      counters: {
+        promptTokensTotal: 100,
+        generationTokensTotal: 50,
+        prefillTokensTotal: 0,
+        requestsSuccessTotal: 10,
+        requestsCancelledTotal: 0,
+        requestsFailedTotal: 0,
+      },
+      histogramSums: {
+        decodeTimeSeconds: 10,
+        prefillTimeSeconds: 5,
+        timeToFirstTokenSeconds: 2,
+        e2eRequestLatencySeconds: 15,
+        promptTokens: 0,
+        outputTokens: 0,
+      },
+    });
+    computeUsageDelta(baselineMetrics);
+
+    // First call with increased values
+    const firstMetrics = makeMetrics({
+      counters: {
+        promptTokensTotal: 200,
+        generationTokensTotal: 100,
+        prefillTokensTotal: 0,
+        requestsSuccessTotal: 15,
+        requestsCancelledTotal: 0,
+        requestsFailedTotal: 0,
+      },
+      histogramSums: {
+        decodeTimeSeconds: 30,
+        prefillTimeSeconds: 10,
+        timeToFirstTokenSeconds: 5,
+        e2eRequestLatencySeconds: 50,
+        promptTokens: 0,
+        outputTokens: 0,
+      },
+    });
+    const firstDelta = computeUsageDelta(firstMetrics);
+
+    expect(firstDelta).toEqual({
+      gpuComputeSeconds: 20,
+      prefillSeconds: 5,
+      timeToFirstTokenSeconds: 3,
+      e2eLatencySeconds: 35,
+      promptTokens: 100,
+      generationTokens: 50,
+      requests: 5,
+      isFreshDay: false,
+      processRestarted: false,
+    });
+
+    // Second call with further increased values
+    // Delta should be computed from the baseline snapshot, not from the first call
+    const secondMetrics = makeMetrics({
+      counters: {
+        promptTokensTotal: 300,
+        generationTokensTotal: 150,
+        prefillTokensTotal: 0,
+        requestsSuccessTotal: 20,
+        requestsCancelledTotal: 0,
+        requestsFailedTotal: 0,
+      },
+      histogramSums: {
+        decodeTimeSeconds: 50,
+        prefillTimeSeconds: 15,
+        timeToFirstTokenSeconds: 8,
+        e2eRequestLatencySeconds: 80,
+        promptTokens: 0,
+        outputTokens: 0,
+      },
+    });
+    const secondDelta = computeUsageDelta(secondMetrics);
+
+    expect(secondDelta).toEqual({
+      gpuComputeSeconds: 40,
+      prefillSeconds: 10,
+      timeToFirstTokenSeconds: 6,
+      e2eLatencySeconds: 65,
+      promptTokens: 200,
+      generationTokens: 100,
+      requests: 10,
+      isFreshDay: false,
+      processRestarted: false,
+    });
+
+    // Verify deltas add up correctly to total usage
+    expect(secondDelta.promptTokens).toBe(firstDelta.promptTokens + 100);
+    expect(secondDelta.generationTokens).toBe(firstDelta.generationTokens + 50);
+    expect(secondDelta.gpuComputeSeconds).toBe(firstDelta.gpuComputeSeconds + 20);
+    expect(secondDelta.requests).toBe(firstDelta.requests + 5);
+  });
 });

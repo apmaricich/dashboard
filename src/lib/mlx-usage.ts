@@ -91,8 +91,8 @@ export function computeUsageDelta(metrics: MlxMetrics): MlxUsageDelta {
       };
     }
 
-    // Compute deltas
-    const delta: MlxUsageDelta = {
+    // Compute deltas without updating the snapshot
+    return {
       gpuComputeSeconds: metrics.histogramSums.decodeTimeSeconds - snapshot.decodeTimeSeconds,
       prefillSeconds: metrics.histogramSums.prefillTimeSeconds - snapshot.prefillTimeSeconds,
       timeToFirstTokenSeconds: metrics.histogramSums.timeToFirstTokenSeconds - snapshot.timeToFirstTokenSeconds,
@@ -103,10 +103,6 @@ export function computeUsageDelta(metrics: MlxMetrics): MlxUsageDelta {
       isFreshDay: false,
       processRestarted: false,
     };
-
-    // Update snapshot to current values
-    saveSnapshot(metrics);
-    return delta;
   }
 
   // No snapshot — save current as baseline
