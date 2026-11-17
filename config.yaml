@@ -38,28 +38,17 @@ widgets:
       showProgress: true
       showKey: false
 
-  - name: "System Metrics"
-    type: system
-    order: 6
-    refresh: 5
-    center: true
-    daysShown: [] # hidden
-  - name: "MLX Status"
-    type: mlx
-    order: 7
-    refresh: 30
-    center: true
-    params:
-      endpoint: "http://localhost:8080"
   - name: "Weather (Bowie, MD)"
     type: weather
     order: 3
     refresh: 600
     center: true
+    daysShown: [] # hidden
     params:
       latitude: 38.9443
       longitude: -76.831
       temperatureUnit: fahrenheit
+
   - name: "Work Progress"
     type: workday
     order: 4
@@ -69,13 +58,38 @@ widgets:
     params:
       startHour: 8
       endHour: 16
-  - name: "Pomodoro"
+
+  - name: "Pomo Today"
     type: shell
     order: 5
     refresh: 600
     center: true
     params:
       command: "pomo stats"
+
+  - name: "Pomo Week"
+    type: shell
+    order: 6
+    refresh: 600
+    center: true
+    params:
+      command: "pomo stats --week"
+
+  - name: "System Metrics"
+    type: system
+    order: 6
+    refresh: 5
+    center: true
+    daysShown: [] # hidden
+
+  - name: "MLX Status"
+    type: mlx
+    order: 7
+    refresh: 30
+    center: true
+    params:
+      endpoint: "http://localhost:8080"
+
   - name: "CalMCP Tasks"
     type: shell
     order: 8
@@ -88,18 +102,27 @@ widgets:
     refresh: 60
     params:
       command: "task stats --file ~/Code/CalMCP/tasks.json"
-  - name: "Dashboard Tasks"
+  - name: "Tasks: dashboard"
     type: shell
-    order: 8
+    order: 10
     refresh: 60
     params:
       command: "task --file ~/Code/dashboard/tasks.json"
-  - name: "Dashboard Stats"
+
+  - name: "Stats: dashboard"
     type: shell
-    order: 9
+    order: 11
     refresh: 60
     params:
       command: "task stats --file ~/Code/dashboard/tasks.json"
+
+  - name: "Tasks: pomo"
+    type: shell
+    order: 12
+    refresh: 60
+    params:
+      command: "task --file ~/Code/pomo/tasks.json"
+
   - name: "OP"
     type: image
     order: 1
