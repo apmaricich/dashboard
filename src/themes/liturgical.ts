@@ -52,7 +52,7 @@ const LITURGICAL_THEMES: Record<string, { colors: { primary: string; border: str
         colors: {
             primary: '#e0e0e0',
             border: '#e0e0e0',
-            text: '#111111',
+            text: '#d0d0d0',
             background: '#1a1a1a',
             accent: '#ffffff',
         },
