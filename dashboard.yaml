@@ -38,6 +38,13 @@ widgets:
     params:
       command: "task stats"
 
+  - name: "Backlog"
+    type: shell
+    order: 12
+    refresh: 60
+    params:
+      command: "task view backlog --all"
+
   - name: "MLX Status"
     type: mlx
     order: 100

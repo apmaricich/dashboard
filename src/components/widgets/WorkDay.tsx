@@ -98,9 +98,16 @@ const WorkDay = () => {
         <Text bold color={theme.colors.primary}>{progress.status}</Text>
       </Box>
       <Box>
-        <Text color={theme.colors.text}>
-          [{renderBar(progress.progress, 20)}] {Math.round(progress.progress * 100)}%
+        <Text color={
+          progress.progress < 0.80
+            ? theme.colors.text
+            : progress.progress < 0.90
+              ? ("208" as any)
+              : ("119" as any)
+        }>
+          |{renderBar(progress.progress, 20)}|
         </Text>
+        <Text color={theme.colors.accent}> {Math.round(progress.progress * 100)}%</Text>
       </Box>
       <Box>
         <Text color={theme.colors.accent}>{progress.timeRemaining}</Text>
