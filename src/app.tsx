@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import React from "react";
 import {
   render,
@@ -9,6 +10,8 @@ import {
   Text,
 } from "ink";
 import { readFileSync } from "fs";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 import { loadConfig, DashboardConfig } from "./config/loader.js";
 import useThemeRefresh from "./hooks/useThemeRefresh.js";
 import usePages from "./hooks/usePages.js";
@@ -20,8 +23,11 @@ import { useCallup } from "./hooks/useCallup.js";
 import { useLayoutVars } from "./hooks/useLayoutVars.js";
 import { resolveTemplate } from "./lib/template.js";
 
-// Read version from package.json (from project root)
-const pkg = JSON.parse(readFileSync("package.json", "utf-8"));
+// Read version from package.json (from project root, not current directory)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const pkgPath = `${__dirname}/../package.json`;
+const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
 const APP_VERSION = pkg.version;
 
 /**
@@ -168,7 +174,7 @@ const Dashboard = ({ config }: { config: DashboardConfig }) => {
  */
 async function main() {
   // Load configuration
-  let configPath = "config.yaml";
+  let configPath = "dashboard.yaml";
   if (process.argv.includes("--config")) {
     const idx = process.argv.indexOf("--config");
     if (idx + 1 < process.argv.length) {

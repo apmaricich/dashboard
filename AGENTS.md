@@ -10,7 +10,7 @@ A configurable, flat-file-driven terminal dashboard built with Ink (React for te
 - **Foundation widget pattern:** All widgets wrap themselves in a `FoundationWidget` that provides layout, theme, and refresh cycle management
 - **Layout engine:** Pluggable layout strategies (grid, banner, etc.) with maxCols configuration. Banner layout places the first widget as a full-width top banner (25% of height) with remaining widgets in a grid below.
 - **Theme system:** Dynamic theming with liturgical color support
-- **Flat-file configuration:** All settings in `config.yaml`
+- **Flat-file configuration:** All settings in `dashboard.yaml`
 
 ### Project Structure
 

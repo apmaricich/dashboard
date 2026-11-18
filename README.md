@@ -29,7 +29,7 @@ npm start
 
 ## Configuration
 
-Configuration is stored in `config.yaml`. If the file is missing, the dashboard uses sensible defaults.
+Configuration is stored in `dashboard.yaml`. If the file is missing, the dashboard uses sensible defaults.
 
 ```yaml
 layout:
@@ -91,7 +91,7 @@ Each widget object requires:
 ### Run the Dashboard
 
 ```bash
-# Run with default config.yaml
+# Run with default dashboard.yaml
 npm start
 
 # Run with a custom config file

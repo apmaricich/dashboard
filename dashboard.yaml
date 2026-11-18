@@ -1,9 +1,9 @@
 layout:
-  strategy: grid
-  maxCols: 3
-  maxRows: 2
+  # strategy: grid
+  # maxCols: 3
+  # maxRows: 2
   # strategy: focus
-  # strategy: banner
+  strategy: banner
   theme: liturgical
   # theme: seasonal
   # theme: vibrant
@@ -32,7 +32,7 @@ widgets:
 
   - name: "Liturgical Calendar"
     type: liturgical
-    order: 2
+    order: 6
     refresh: 60
     params:
       showProgress: true
@@ -51,7 +51,7 @@ widgets:
 
   - name: "Work Progress"
     type: workday
-    order: 4
+    order: 3
     refresh: 60
     center: true
     daysHidden: ["weekends"]
@@ -61,7 +61,7 @@ widgets:
 
   - name: "Pomo Today"
     type: shell
-    order: 5
+    order: 2
     refresh: 600
     center: true
     params:
@@ -69,7 +69,7 @@ widgets:
 
   - name: "Pomo Week"
     type: shell
-    order: 6
+    order: 4
     refresh: 600
     center: true
     params:
@@ -84,44 +84,11 @@ widgets:
 
   - name: "MLX Status"
     type: mlx
-    order: 7
+    order: 5
     refresh: 30
     center: true
     params:
       endpoint: "http://localhost:8080"
-
-  - name: "CalMCP Tasks"
-    type: shell
-    order: 8
-    refresh: 60
-    params:
-      command: "task --file ~/Code/CalMCP/tasks.json"
-  - name: "CalMCP Stats"
-    type: shell
-    order: 9
-    refresh: 60
-    params:
-      command: "task stats --file ~/Code/CalMCP/tasks.json"
-  - name: "Tasks: dashboard"
-    type: shell
-    order: 10
-    refresh: 60
-    params:
-      command: "task --file ~/Code/dashboard/tasks.json"
-
-  - name: "Stats: dashboard"
-    type: shell
-    order: 11
-    refresh: 60
-    params:
-      command: "task stats --file ~/Code/dashboard/tasks.json"
-
-  - name: "Tasks: pomo"
-    type: shell
-    order: 12
-    refresh: 60
-    params:
-      command: "task --file ~/Code/pomo/tasks.json"
 
   - name: "OP"
     type: image

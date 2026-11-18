@@ -1,6 +1,9 @@
 {
   "name": "dashboard",
   "version": "0.1.0",
+  "bin": {
+    "dashboard": "./dist/app.js"
+  },
   "private": true,
   "description": "Configurable terminal dashboard with liturgical, developer, and system widgets",
   "type": "module",

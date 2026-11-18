@@ -1,1 +1,7 @@
-npm run build && npm start
+#!/bin/bash
+set -e
+
+npm run build
+npm install -g .
+dashboard
+
