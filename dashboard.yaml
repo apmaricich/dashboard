@@ -1,11 +1,11 @@
 layout:
-  # strategy: grid
-  # maxCols: 3
-  # maxRows: 2
+  strategy: grid
+  maxCols: 2
+  maxRows: 2
   # strategy: focus
-  strategy: banner
-  theme: liturgical
-  # theme: seasonal
+  # strategy: banner
+  # theme: liturgical
+  theme: seasonal
   # theme: vibrant
   themeRefresh:
     atHour: 23
@@ -24,79 +24,25 @@ layout:
       refresh: 1
 
 widgets:
-  - name: "Clock"
-    type: clock
-    order: 1
-    refresh: 1
-    center: true
-
-  - name: "Liturgical Calendar"
-    type: liturgical
-    order: 6
+  - name: "Tasks"
+    type: shell
+    order: 10
     refresh: 60
     params:
-      showProgress: true
-      showKey: false
+      command: "task"
 
-  - name: "Weather (Bowie, MD)"
-    type: weather
-    order: 3
-    refresh: 600
-    center: true
-    daysShown: [] # hidden
-    params:
-      latitude: 38.9443
-      longitude: -76.831
-      temperatureUnit: fahrenheit
-
-  - name: "Work Progress"
-    type: workday
-    order: 3
+  - name: "Stats"
+    type: shell
+    order: 11
     refresh: 60
-    center: true
-    daysHidden: ["weekends"]
     params:
-      startHour: 8
-      endHour: 16
-
-  - name: "Pomo Today"
-    type: shell
-    order: 2
-    refresh: 600
-    center: true
-    params:
-      command: "pomo stats"
-
-  - name: "Pomo Week"
-    type: shell
-    order: 4
-    refresh: 600
-    center: true
-    params:
-      command: "pomo stats --week"
-
-  - name: "System Metrics"
-    type: system
-    order: 6
-    refresh: 5
-    center: true
-    daysShown: [] # hidden
+      command: "task stats"
 
   - name: "MLX Status"
     type: mlx
-    order: 5
+    order: 100
     refresh: 30
     center: true
     params:
       endpoint: "http://localhost:8080"
-
-  - name: "OP"
-    type: image
-    order: 1
-    refresh: 0
-    center: true
-    daysShown: [] # hidden
-    params:
-      path: ./assets/op.png
-      preserveAspectRatio: true
 
